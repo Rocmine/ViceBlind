@@ -258,10 +258,55 @@ try {
   await pop.click('#level button[data-value="strict"]');
   await sleep(500);
   check('popup level change saves', (await getSettings()).level === 'strict');
+  // ---- Master switch round trip. Regression: once turned off, the switch used to become unclickable
+  // (a `:first-of-type` selector matched the Shield row and disabled it along with the rest).
+  const popState = () => pop.evaluate(() => ({
+    status: document.getElementById('statusText').textContent,
+    othersInert: [...document.querySelectorAll('.row:not(.row-shield)')].every((r) => r.inert),
+    anyInert: [...document.querySelectorAll('.row')].some((r) => r.inert),
+    shieldFree: !document.getElementById('shield').closest('[inert]') && getComputedStyle(document.getElementById('shield')).pointerEvents !== 'none',
+  }));
+  const clickShield = async () => { try { await pop.click('#shield', { timeout: 4000 }); return true; } catch { return false; } };
+  const hiddenOnPage = () => page.evaluate(() => document.querySelectorAll('[data-vb]').length);
+
   await pop.click('#shield');
-  await sleep(500);
+  await sleep(600);
   check('popup master switch saves', (await getSettings()).enabled === false);
+  let ps = await popState();
+  check('off: status says Off', ps.status === 'Off', ps.status);
+  check('off: the other rows are inert', ps.othersInert);
+  check('off: the Shield switch itself stays usable', ps.shieldFree);
+  check('off: nothing is hidden on the page', (await hiddenOnPage()) === 0);
   await pop.screenshot({ path: path.join(OUT, 'popup-off.png'), fullPage: true });
+
+  check('off: the switch can be clicked to turn it back on', await clickShield());
+  await sleep(700);
+  check('back on: enabled is saved as true', (await getSettings()).enabled === true);
+  ps = await popState();
+  check('back on: status says Shield on', ps.status === 'Shield on', ps.status);
+  check('back on: no row is left inert', !ps.anyInert);
+  check('back on: the page hides GTA cards again', (await hiddenOnPage()) > 0);
+
+  // Same round trip from the keyboard.
+  await pop.focus('#shield');
+  await pop.keyboard.press('Space');
+  await sleep(600);
+  check('keyboard: Space turns it off', (await getSettings()).enabled === false);
+  await pop.focus('#shield');
+  await pop.keyboard.press('Space');
+  await sleep(700);
+  check('keyboard: Space turns it back on', (await getSettings()).enabled === true);
+
+  // The real-world trigger: a visible notice above the rows (release-day reminder), turned off from it.
+  await setSettings({ pcDate: '2020-01-01' });
+  await sleep(800);
+  check('release-day notice is shown', await pop.evaluate(() => !document.getElementById('notice').hidden));
+  await pop.click('#notice button:has-text("Turn off")');
+  await sleep(700);
+  check('notice: Turn off switches the shield off', (await getSettings()).enabled === false);
+  check('notice: the switch still turns it back on', await clickShield());
+  await sleep(700);
+  check('notice: shield is on again', (await getSettings()).enabled === true);
   await resetSettings();
 
   const opt = await ctx.newPage();

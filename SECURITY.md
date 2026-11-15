@@ -16,5 +16,5 @@ Do not open a public issue for a vulnerability. You will get a reply as soon as 
 
 ## Verifying a download
 
-Each release lists SHA-256 checksums (`SHA256SUMS.txt`). On Windows: `Get-FileHash vice-blind-chrome-1.0.0.zip -Algorithm SHA256`.
+Each release lists SHA-256 checksums (`SHA256SUMS.txt`). On Windows: `Get-FileHash vice-blind-chrome-1.0.1.zip -Algorithm SHA256`.
 The extension is not in any browser store yet, so the zips on the Releases page are the only official downloads.

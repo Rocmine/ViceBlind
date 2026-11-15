@@ -63,8 +63,8 @@ Safari is not supported (it needs a Mac with Xcode to convert the extension).
 
 ## Publishing
 
-- Chrome Web Store / Edge Add-ons / Opera: upload `dist/vice-blind-chrome-1.0.0.zip`.
-- Firefox (addons.mozilla.org): upload `dist/vice-blind-firefox-1.0.0.zip`. The manifest already declares `data_collection_permissions: none`. Change `GECKO_ID` in `tools/build.py` if you want a different add-on id.
+- Chrome Web Store / Edge Add-ons / Opera: upload `dist/vice-blind-chrome-1.0.1.zip`.
+- Firefox (addons.mozilla.org): upload `dist/vice-blind-firefox-1.0.1.zip`. The manifest already declares `data_collection_permissions: none`. Change `GECKO_ID` in `tools/build.py` if you want a different add-on id.
 - Store listing wording: "Not affiliated with Rockstar Games or Take-Two Interactive." The icon is original (window blind), not Rockstar artwork.
 - Permissions to justify: `<all_urls>` (the whole point: find GTA VI content on any site), `storage` (settings), `contextMenus` ("Hide selection"), `alarms` (end a pause).
 

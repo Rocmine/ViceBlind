@@ -49,6 +49,8 @@
     $('statusText').textContent = !s.enabled ? 'Off' : paused ? 'Paused' : 'Shield on';
     $('status').classList.toggle('off', !on);
     document.body.classList.toggle('is-off', !s.enabled);
+    // Off means the other controls do nothing; inert also blocks keyboard focus and screen readers. The Shield row stays live.
+    for (const row of document.querySelectorAll('.row:not(.row-shield)')) row.inert = !s.enabled;
     $('shieldText').textContent = s.enabled ? 'GTA VI is hidden on every site.' : 'Off. Nothing is hidden.';
   }
 

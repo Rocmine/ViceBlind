@@ -16,8 +16,8 @@ Use the website upload. It needs no API keys.
 3. When asked how to distribute it, choose **On your own** (unlisted). Mozilla signs it automatically and it is
    not shown on addons.mozilla.org. Choose **On this site** instead if you also want a public store page; that
    adds a human review and takes longer.
-4. Upload `vice-blind-firefox-1.0.0.zip` (from the GitHub release, or `dist/` after `python tools/build.py`).
-5. If asked "Do you need to submit source code?", answer **Yes** and upload `vice-blind-source-1.0.0.zip`
+4. Upload `vice-blind-firefox-1.0.1.zip` (**not 1.0.0**: 1.0.0 has a popup bug where the shield switch could not be turned back on) (from the GitHub release, or `dist/` after `python tools/build.py`).
+5. If asked "Do you need to submit source code?", answer **Yes** and upload `vice-blind-source-1.0.1.zip`
    (`python tools/make_source_zip.py`). Build steps: `npm install`, then `python tools/build.py`. The only
    generated file in the package is `content/content-css.js`, made from `content/content.css`.
 6. When validation finishes, download the signed `.xpi`.
@@ -44,7 +44,7 @@ Notes
 ## Chrome Web Store (also reaches Brave, Opera and Vivaldi users)
 
 1. Chrome developer account: <https://chrome.google.com/webstore/devconsole> (one-time 5 US dollar fee).
-2. Upload `vice-blind-chrome-1.0.0.zip`.
+2. Upload `vice-blind-chrome-1.0.1.zip`.
 3. Use the same description. Permission justifications: `<all_urls>` to find GTA VI content on any site;
    `storage` to keep your settings; `contextMenus` for the "Hide selection" menu item; `alarms` to end a pause.
 4. Privacy practices: collects no user data; no remote code.

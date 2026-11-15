@@ -33,5 +33,6 @@ body { width: 380px; }
 
 .foot { display: flex; align-items: center; justify-content: space-between; padding: 0.1rem 1.1rem; border-top: 1px solid var(--line); }
 
-.is-off .row:not(:first-of-type) { opacity: 0.45; }
-.is-off .row:not(:first-of-type) * { pointer-events: none; }
+/* When the shield is off, dim every row except the Shield row, which must stay usable to turn it back on.
+ * Do not use :first-of-type here: it counts by tag, and the (hidden) #notice div comes before the Shield row. */
+.is-off .row:not(.row-shield) { opacity: 0.45; }
