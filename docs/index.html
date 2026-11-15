@@ -105,15 +105,20 @@
             <li>Choose Load unpacked and pick the unzipped folder.</li>
             <li>Pin Vice Blind from the puzzle icon. The number on it counts what was hidden on the page.</li>
           </ol>
+          <p class="hint dim">Chrome and Edge show a "developer mode extensions" banner for unpacked installs. That is expected until Vice Blind is in their stores.</p>
         </div>
         <div>
           <h3>Firefox 140 and newer</h3>
+          <p class="callout"><b>Firefox says "not verified"?</b> That is expected for now. Mozilla has not signed Vice Blind yet, and regular Firefox only keeps signed add-ons. Do not drag the zip into Firefox or use Install Add-on From File: that is what shows the warning. A signed version is on the way and this page will link it.</p>
+          <h4>Try it now, until Firefox restarts</h4>
           <ol>
             <li>Download <code>vice-blind-firefox-1.0.0.zip</code> from the release and unzip it.</li>
             <li>Open <code>about:debugging#/runtime/this-firefox</code>.</li>
             <li>Choose Load Temporary Add-on and pick <code>manifest.json</code> from the unzipped folder.</li>
+            <li>If the popup says Vice Blind needs access to all sites, click Grant access.</li>
           </ol>
-          <p class="hint dim">Firefox removes temporary add-ons when it restarts, so you load it again after a restart.</p>
+          <h4>Keep it without signing</h4>
+          <p class="hint">Firefox Developer Edition, Nightly and ESR let you set <code>xpinstall.signatures.required</code> to <code>false</code> in <code>about:config</code>. Regular Firefox ignores that setting.</p>
         </div>
       </div>
       <p class="muted center-p">Each release lists SHA-256 checksums, so you can check your download. Safari is not supported.</p>

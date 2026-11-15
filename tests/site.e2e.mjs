@@ -66,6 +66,7 @@ try {
   check('og image file exists in docs', (await fs.stat(path.join(DOCS, 'assets', 'og.png'))).size > 1000);
 
   console.log('\nLive demo');
+  check('Firefox "not verified" guidance is on the page', await page.evaluate(() => { const t = document.querySelector('#install').innerText; return /not verified/i.test(t) && /Do not drag the zip/i.test(t) && /about:debugging/.test(t); }));
   const cards = page.locator('#feed .demo-card');
   check('three demo cards', (await cards.count()) === 3);
   check('GTA cards hidden, the other one is not', (await cards.nth(0).getAttribute('data-vb')) === 'blur' && (await cards.nth(1).getAttribute('data-vb')) === null && (await cards.nth(2).getAttribute('data-vb')) === 'blur');

@@ -53,6 +53,12 @@ Build first: `python tools/build.py` (writes `dist/chrome`, `dist/firefox` and t
 | Opera | `opera://extensions` -> Developer mode -> **Load unpacked** -> `dist/chrome` |
 | Firefox (140+) | `about:debugging#/runtime/this-firefox` -> **Load Temporary Add-on** -> `dist/firefox/manifest.json` |
 
+### Firefox says "not verified"?
+
+That is expected until Mozilla signs Vice Blind. Regular Firefox only keeps add-ons signed by Mozilla, and Vice Blind has not been submitted yet. **Do not drag the zip into Firefox or use "Install Add-on From File"**: that is what shows "could not be verified". Use the temporary install above (it lasts until Firefox restarts), or Firefox Developer Edition, Nightly or ESR with `xpinstall.signatures.required` set to `false` in `about:config` (regular Firefox ignores that setting). A signed build will be added to the releases once Mozilla approves it. Steps for signing are in [PUBLISHING.md](PUBLISHING.md).
+
+Chrome and Edge show a "developer mode extensions" banner for unpacked installs. That is also expected until the extension is in their stores.
+
 Safari is not supported (it needs a Mac with Xcode to convert the extension).
 
 ## Publishing

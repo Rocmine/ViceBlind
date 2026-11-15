@@ -71,3 +71,7 @@ code { font: 600 0.88em/1 var(--sans); color: var(--pink-soft); background: rgba
 .note p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; margin-bottom: 0.9rem; }
 .note .sign-off { margin-top: 1.3rem; }
 .foot-links { display: inline-flex; gap: 1.2rem; }
+
+.callout { margin: 0 0 1rem; padding: 0.8rem 1rem; border: 1px solid var(--coral); border-radius: 16px; background: rgba(255, 138, 91, 0.08); color: var(--sand); font-size: 0.94rem; line-height: 1.6; }
+.callout b { color: var(--coral); }
+.install h4 { font-size: 0.98rem; margin: 1rem 0 0.4rem; color: var(--sand); }
