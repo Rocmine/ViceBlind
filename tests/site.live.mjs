@@ -30,6 +30,7 @@ try {
   check('every resource came from the site itself', await page.evaluate(() => performance.getEntriesByType('resource').every((r) => r.name.startsWith(location.origin))));
   check('fonts load', await page.evaluate(async () => { await Promise.all([document.fonts.load('1em Yellowtail'), document.fonts.load('600 1em Jost')]); return document.fonts.check('1em Yellowtail') && document.fonts.check('600 1em Jost'); }));
   check('Firefox "not verified" guidance is on the page', await page.evaluate(() => { const t = document.querySelector('#install').innerText; return /not verified/i.test(t) && /Do not drag the zip/i.test(t) && /about:debugging/.test(t); }));
+  check('Firefox Add-ons link is on the page', await page.evaluate(() => { const a = document.querySelector('#install a[href="https://addons.mozilla.org/en-US/firefox/addon/vice-blind/"]'); return !!a && /noopener/.test(a.rel) && /noreferrer/.test(a.rel); }));
   const cards = page.locator('#feed .demo-card');
   await cards.nth(0).click(); await cards.nth(0).click();
   check('live demo reveals on two clicks', (await cards.nth(0).getAttribute('data-vb')) === 'shown');

@@ -68,6 +68,7 @@ try {
 
   console.log('\nLive demo');
   check('Firefox "not verified" guidance is on the page', await page.evaluate(() => { const t = document.querySelector('#install').innerText; return /not verified/i.test(t) && /Do not drag the zip/i.test(t) && /about:debugging/.test(t); }));
+  check('Firefox Add-ons link is on the page', await page.evaluate(() => { const a = document.querySelector('#install a[href="https://addons.mozilla.org/en-US/firefox/addon/vice-blind/"]'); return !!a && /noopener/.test(a.rel) && /noreferrer/.test(a.rel); }));
   const cards = page.locator('#feed .demo-card');
   check('three demo cards', (await cards.count()) === 3);
   check('GTA cards hidden, the other one is not', (await cards.nth(0).getAttribute('data-vb')) === 'blur' && (await cards.nth(1).getAttribute('data-vb')) === null && (await cards.nth(2).getAttribute('data-vb')) === 'blur');

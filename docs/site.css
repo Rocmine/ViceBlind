@@ -82,3 +82,6 @@ code { font: 600 0.88em/1 var(--sans); color: var(--pink-soft); background: rgba
 .support p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; }
 .support .cta { justify-content: center; margin-top: 1.4rem; }
 .support .fine { margin-top: 1rem; font-size: 0.88rem; }
+
+.install .amo { margin: 0 0 0.6rem; }
+.install .amo-note { margin: 0 0 1rem; }

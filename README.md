@@ -25,9 +25,9 @@ Thank you to the whole GTA community, and to every PC player who is waiting pati
 
 Find me on Twitch: [twitch.tv/rocmine](https://www.twitch.tv/rocmine)
 
-## Support the project
+## Support my work
 
-Vice Blind is free and will stay free. If it saved you from a spoiler and you'd like to help me keep building it, you can **[sponsor me on GitHub](https://github.com/sponsors/Rocmine)**. It is never expected, and every bit means a lot. Starring the project and telling another PC player helps just as much.
+Vice Blind is free and will stay free. If you'd like to support me more generally, you can **[sponsor me on GitHub](https://github.com/sponsors/Rocmine)**. It helps me keep building and maintaining free, open-source projects like this one. It is never expected, and every bit means a lot. Starring a project and telling a friend helps just as much.
 
 ## What it does
 
@@ -55,11 +55,11 @@ Build first: `python tools/build.py` (writes `dist/chrome`, `dist/firefox` and t
 | Chrome, Brave, Vivaldi | `chrome://extensions` -> Developer mode -> **Load unpacked** -> `dist/chrome` |
 | Edge | `edge://extensions` -> Developer mode -> **Load unpacked** -> `dist/chrome` |
 | Opera | `opera://extensions` -> Developer mode -> **Load unpacked** -> `dist/chrome` |
-| Firefox (140+) | `about:debugging#/runtime/this-firefox` -> **Load Temporary Add-on** -> `dist/firefox/manifest.json` |
+| Firefox (140+) | **[Firefox Add-ons page](https://addons.mozilla.org/en-US/firefox/addon/vice-blind/)** (in review at Mozilla; it goes live once approved), or for now: `about:debugging#/runtime/this-firefox` -> **Load Temporary Add-on** -> `dist/firefox/manifest.json` |
 
 ### Firefox says "not verified"?
 
-That is expected until Mozilla signs Vice Blind. Regular Firefox only keeps add-ons signed by Mozilla, and Vice Blind has not been submitted yet. **Do not drag the zip into Firefox or use "Install Add-on From File"**: that is what shows "could not be verified". Use the temporary install above (it lasts until Firefox restarts), or Firefox Developer Edition, Nightly or ESR with `xpinstall.signatures.required` set to `false` in `about:config` (regular Firefox ignores that setting). A signed build will be added to the releases once Mozilla approves it. Steps for signing are in [PUBLISHING.md](PUBLISHING.md).
+Vice Blind is in review on [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/vice-blind/); once Mozilla approves it, Firefox installs and updates it for you with no warning. Until then, that message is expected: Vice Blind is not signed yet. Regular Firefox only keeps add-ons signed by Mozilla. **Do not drag the zip into Firefox or use "Install Add-on From File"**: that is what shows "could not be verified". Use the temporary install above (it lasts until Firefox restarts), or Firefox Developer Edition, Nightly or ESR with `xpinstall.signatures.required` set to `false` in `about:config` (regular Firefox ignores that setting). Once approved, install it from the Firefox Add-ons page instead. Steps for submitting versions are in [PUBLISHING.md](PUBLISHING.md).
 
 Chrome and Edge show a "developer mode extensions" banner for unpacked installs. That is also expected until the extension is in their stores.
 
