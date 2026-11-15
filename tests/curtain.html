@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GTA 6 trailer 3 reaction - Fixture TV</title>
+<style>body{font:16px system-ui;margin:24px;background:#fff;color:#111}</style>
+</head>
+<body>
+<h1>Trailer reaction</h1>
+<p id="body-text">Some page text.</p>
+<p id="mention">Also mentions GTA 6 in the body.</p>
+<video id="v" width="320" height="180" muted playsinline></video>
+<script>
+  // A playing video: a canvas stream, so the test needs no media file.
+  const c = document.createElement('canvas'); c.width = 320; c.height = 180;
+  const g = c.getContext('2d');
+  setInterval(() => { g.fillStyle = '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0'); g.fillRect(0, 0, 320, 180); }, 100);
+  const v = document.getElementById('v');
+  v.srcObject = c.captureStream(10);
+  v.play().catch(() => {});
+</script>
+</body>
+</html>

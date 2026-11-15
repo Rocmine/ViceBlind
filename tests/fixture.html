@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixture feed</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 24px; background: #fff; color: #111; }
+  ul { list-style: none; padding: 0; margin: 0 0 24px; width: 420px; }
+  li { padding: 14px; border: 1px solid #ccc; margin-bottom: 8px; }
+  article.long p { min-height: 220px; margin: 0; }
+  .long { width: 600px; }
+</style>
+</head>
+<body>
+<h1 id="page-h1">Fixture feed</h1>
+
+<!-- 1. plain cards: a, c hit; b, d must stay visible -->
+<ul id="feed">
+  <li id="a"><a id="a-link" href="#navigated">GTA 6 trailer 3 breakdown</a></li>
+  <li id="b"><a href="#b">Weekend thread: what are you playing?</a></li>
+  <li id="c"><a href="#c">Jason Duval and Lucia Caminos interview</a></li>
+  <li id="d"><a href="#d">GTA V mods for 2026</a></li>
+</ul>
+
+<!-- 2. attribute and link hits -->
+<ul id="attrs">
+  <li id="img-card"><img id="img1" alt="Vice City screenshot" width="120" height="60" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></li>
+  <li id="href-card"><a href="/news/gta-6-release-date">Read more</a></li>
+  <li id="title-card"><span title="Leonida map leak">hover me</span></li>
+  <li id="plain-card"><a href="/news/weather">Weather today</a></li>
+</ul>
+
+<!-- 3. things the user types must never be touched -->
+<textarea id="ta" rows="2" cols="40">GTA 6 notes</textarea>
+<div id="ce" contenteditable="true">my draft about GTA 6</div>
+
+<!-- 4. open shadow root -->
+<div id="shadow-host"></div>
+
+<!-- 5. a tall article with one mention: only the paragraph may be hidden, never the page -->
+<article class="long" id="long">
+  <p>Intro paragraph about cooking.</p>
+  <p id="long-hit">Somewhere in the middle: Vice City gets a mention.</p>
+  <p>Closing paragraph about gardening.</p>
+  <p>More filler paragraph one.</p>
+  <p>More filler paragraph two.</p>
+</article>
+
+<ul id="dyn"></ul>
+
+<script>
+  // open shadow DOM card
+  const host = document.getElementById('shadow-host');
+  const sr = host.attachShadow({ mode: 'open' });
+  sr.innerHTML = '<article id="sh-card"><p>GTA VI leaks inside shadow DOM</p></article><article id="sh-ok"><p>Plain shadow card</p></article>';
+
+  // dynamic injection after load
+  setTimeout(() => {
+    const dyn = document.getElementById('dyn');
+    dyn.insertAdjacentHTML('beforeend', '<li id="dyn-hit">Late arrival: gta-6 map</li><li id="dyn-ok">Late arrival: tomato soup</li>');
+  }, 400);
+
+  // a recycled card: starts as a hit, later becomes clean (virtual-list reuse)
+  const recycle = document.createElement('li');
+  recycle.id = 'recycled';
+  recycle.textContent = 'GTA 6 news roundup';
+  document.getElementById('dyn').append(recycle);
+  window.recycleNow = () => { recycle.textContent = 'Cooking tips for beginners'; };
+  window.recycleBack = () => { recycle.textContent = 'Grand Theft Auto VI rumours'; };
+
+  // text split across elements must still be caught inside a card
+  setTimeout(() => {
+    document.getElementById('dyn').insertAdjacentHTML('beforeend', '<li id="split"><b>GTA</b> <i>6</i> split across tags</li>');
+  }, 500);
+</script>
+</body>
+</html>

@@ -40,6 +40,11 @@
   [data-vb="blur"]::after { background: #06060f; }
 }
 
+/* Belt and braces: the card's own children are blurred or hidden too, so nothing leaks if
+ * backdrop-filter is missing or slow. */
+[data-vb="blur"] > * { filter: blur(14px) saturate(0.5) !important; }
+[data-vb="cover"] > * { visibility: hidden !important; }
+
 /* Reveal modes change the label. */
 html[data-vb-reveal="one"] [data-vb]::after { content: "GTA VI SPOILER HIDDEN\A CLICK TO REVEAL"; }
 html[data-vb-reveal="locked"] [data-vb]::after { content: "GTA VI SPOILER HIDDEN\A LOCKED IN SETTINGS"; cursor: not-allowed; }

@@ -68,6 +68,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 html[data-motion='full'] .title-block::before { transform: scaleY(0); animation: rail 0.55s var(--ease) 0.22s forwards; }
 .title-line { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .title-block.intro-done .title-line { overflow: visible; }
+.ch.sp { width: 0.3em; }
 .ch { display: inline-block; translate: 0 calc(var(--near, 0) * -0.09em);
   text-shadow: 0 0 calc(var(--near, 0) * 0.45em) rgba(59, 109, 255, calc(var(--near, 0) * 0.95));
   transition: translate 0.22s var(--ease), text-shadow 0.22s var(--ease); }

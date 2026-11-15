@@ -39,6 +39,7 @@
         "shared/keywords.js",
         "content/sites.js",
         "content/curtain.js",
+        "content/content-css.js",
         "content/content.js"
       ],
       "css": ["content/content.css"],

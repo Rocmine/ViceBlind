@@ -41,7 +41,7 @@
       const l = el('span', 'title-line');
       l.setAttribute('aria-hidden', 'true');
       for (const c of line) {
-        const s = el('span', 'ch', c === ' ' ? ' ' : c);
+        const s = el('span', c === ' ' ? 'ch sp' : 'ch', c === ' ' ? ' ' : c);
         s.style.setProperty('--i', String(i++));
         l.append(s);
       }
@@ -95,7 +95,7 @@
     const run = el('span', 'ticker-run');
     run.style.setProperty('--n', '6');
     for (let i = 0; i < 6; i++) {
-      const s = el('span', 'ticker-items', text);
+      const s = el('span', 'ticker-items', text.replace(/\s+$/, '\u00a0'));
       if (i) s.setAttribute('aria-hidden', 'true');
       run.append(s);
     }

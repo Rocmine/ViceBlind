@@ -48,6 +48,7 @@
       font-size: clamp(2.6rem, min(17cqi, 30svh), 11rem); }
     .line { display: block; overflow: hidden; padding-bottom: .06em; }
     .done .line { overflow: visible; }
+    .ch.sp { width: .3em; }
     .ch { display: inline-block; translate: 0 calc(var(--near, 0) * -0.09em);
       text-shadow: 0 0 calc(var(--near, 0) * .45em) rgba(59,109,255, calc(var(--near, 0) * .95));
       transition: translate .22s cubic-bezier(.22,1,.36,1), text-shadow .22s cubic-bezier(.22,1,.36,1);
@@ -109,7 +110,7 @@
   function letters(text, startIndex) {
     const frag = document.createDocumentFragment();
     let i = startIndex;
-    for (const c of text) frag.append(el('span', { class: 'ch', style: `--i:${i++}`, text: c === ' ' ? ' ' : c, 'aria-hidden': 'true' }));
+    for (const c of text) frag.append(el('span', { class: c === ' ' ? 'ch sp' : 'ch', style: `--i:${i++}`, text: c === ' ' ? ' ' : c, 'aria-hidden': 'true' }));
     return { frag, next: i };
   }
 
@@ -164,7 +165,7 @@
 
     const tickerText = 'NO SPOILERS · WAIT FOR PC · STAY BLIND · NO SPOILERS · WAIT FOR PC · STAY BLIND · ';
     const run = el('span', { class: 'ticker-run' });
-    for (let i = 0; i < 6; i++) run.append(el('span', { class: 'ticker-items', text: tickerText, ...(i ? { 'aria-hidden': 'true' } : {}) }));
+    for (let i = 0; i < 6; i++) run.append(el('span', { class: 'ticker-items', text: tickerText.replace(/\s+$/, '\u00a0'), ...(i ? { 'aria-hidden': 'true' } : {}) }));
 
     const rootEl = el('div', { class: 'root' + (opts.motion === 'off' ? ' still' : ''), role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Vice Blind: spoiler hidden' },
       el('div', { class: 'grain', 'aria-hidden': 'true' }),

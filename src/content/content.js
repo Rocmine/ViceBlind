@@ -78,6 +78,18 @@
 
   /* ---------- finding hits ---------- */
 
+  // Text split across inline tags ("<b>GTA</b> <i>6</i>") never matches per text node. For short elements
+  // whose children are all leaf elements, test the joined text. Bounded so big containers are never joined.
+  const INLINE = new Set(['A', 'B', 'I', 'U', 'S', 'EM', 'STRONG', 'SPAN', 'MARK', 'SMALL', 'SUB', 'SUP', 'ABBR', 'CITE', 'CODE', 'FONT', 'TIME', 'Q', 'BR', 'WBR', 'BDI', 'BDO']);
+  function mixedText(el) {
+    const n = el.childElementCount;
+    if (!n || n > 6 || el.childNodes.length > 12 || SKIP.has(el.nodeName)) return null;
+    // Only join across inline tags, never across block children (paragraphs, list items, table cells).
+    for (const c of el.children) if (c.childElementCount || !INLINE.has(c.nodeName)) return null;
+    const tc = el.textContent;
+    return tc && tc.length < 400 ? tc : null;
+  }
+
   // Walk a subtree and call onHit(node, hit) for every match. Skips subtrees that are already
   // marked unless opts.into. opts.limit stops early (used by re-checks).
   function walk(rootNode, onHit, opts) {
@@ -100,6 +112,8 @@
         const s = el.getAttribute('src');
         if (s && s.length > 4 && s.length < 600 && !s.startsWith('data:') && M.coreRe.test(safeDecode(s.split('?')[0].split('/').pop()))) { onHit(el, { text: 'GTA VI image', term: { label: 'image', pack: 'core' } }); count++; }
       }
+      const mixed = mixedText(el);
+      if (mixed && M.re.test(mixed)) { onHit(el, M.first(mixed)); count++; }
       const sr = shadowOf(el);
       if (sr && !observed.has(sr)) { watchRoot(sr); queue.push(sr); }
       else if (sr && into) queue.push(sr);
@@ -174,7 +188,7 @@
       if (n === document.body || n === root) break;
       if (isBlock(n) && !tooBig(n)) return n;
     }
-    return el === root || el === document.body ? null : el;
+    return el === root || el === document.body || tooBig(el) ? null : el;
   }
 
   function containerFor(el) {
@@ -196,7 +210,42 @@
     } catch (_) { /* ignore */ }
   }
 
+  // content.css does not reach inside shadow roots, so each root holding a hidden card gets its own copy.
+  const styledRoots = new Set();
+  function shadowCss() {
+    return (VB.contentCss || '')
+      .replace(/html\[data-vb-reveal="(\w+)"\] /g, ':host([data-vb-reveal="$1"]) ')
+      .replace(/html \[data-vb\]\[data-vb-armed\]/g, '[data-vb][data-vb-armed]');
+  }
+  function styleShadow(c) {
+    const r = c.getRootNode();
+    if (!r || !r.host || r.nodeType !== 11) return;
+    if (!styledRoots.has(r)) {
+      styledRoots.add(r);
+      const st = document.createElement('style');
+      st.setAttribute('data-vb-style', '');
+      st.textContent = shadowCss();
+      r.prepend(st);
+    }
+    r.host.setAttribute('data-vb-reveal', settings.reveal);
+  }
+  function refreshShadows() {
+    for (const r of [...styledRoots]) {
+      if (!r.host.isConnected) { styledRoots.delete(r); continue; }
+      r.host.setAttribute('data-vb-reveal', settings.reveal);
+    }
+  }
+  function clearShadows() {
+    for (const r of styledRoots) {
+      const st = r.querySelector('style[data-vb-style]');
+      if (st) st.remove();
+      if (r.host) r.host.removeAttribute('data-vb-reveal');
+    }
+    styledRoots.clear();
+  }
+
   function mark(c, hit, sig) {
+    styleShadow(c);
     c.setAttribute('data-vb', settings.style);
     c.removeAttribute('data-vb-armed');
     const old = infos.get(c);
@@ -221,6 +270,8 @@
   }
 
   function handleHit(node, hit) {
+    // A curtain, or a page the user chose to show, means nothing on it is hidden individually.
+    if (pageAllowed || (VB.curtain && VB.curtain.isUp())) return;
     const el = node.nodeType === 1 ? node : parentAcross(node);
     if (!el || el === root) return;
     if (closestAcross(el, '[data-vb]')) return;           // already decided
@@ -270,10 +321,19 @@
 
   /* ---------- scanning ---------- */
 
+  // Something was added or changed next to existing inline siblings: re-test the joined text of the parent.
+  function testParentMixed(n) {
+    const p = n.parentNode;
+    if (!p || p.nodeType !== 1 || p.hasAttribute('data-vb')) return;
+    const mixed = mixedText(p);
+    if (mixed && matcher.re.test(mixed)) handleHit(p, matcher.first(mixed));
+  }
+
   function scanNode(n) {
     if (n.nodeType === 3) {
       const v = n.nodeValue;
       if (v && v.length > 1 && matcher.re.test(v)) handleHit(n, matcher.first(v));
+      else testParentMixed(n);
       return;
     }
     if (n.nodeType !== 1 || SKIP.has(n.nodeName)) return;
@@ -281,6 +341,7 @@
     // The element itself, then everything under it.
     walk1(n);
     walk(n, handleHit);
+    testParentMixed(n);
   }
 
   // Attributes of the root element of a scan (walk() only checks descendants).
@@ -294,6 +355,8 @@
       const h = el.getAttribute('href');
       if (h && h.length > 4 && h.length < 600 && M.coreRe.test(safeDecode(h))) handleHit(el, { text: 'GTA VI link', term: { label: 'link', pack: 'core' } });
     }
+    const mixed = mixedText(el);
+    if (mixed && M.re.test(mixed)) handleHit(el, M.first(mixed));
     if (adapter && el.matches && el.matches(adapter.union)) {
       const tc = el.textContent;
       if (tc && tc.length < 8000) { const h = M.first(tc); if (h) handleHit(el, h); }
@@ -425,12 +488,21 @@
     return null;
   }
 
+  function clearMarks() { for (const c of [...marked]) unmark(c); updateCount(); }
+
   function evaluatePage() {
     if (!VB.curtain) return;
     if (!active) { VB.curtain.hide(); return; }
     const m = pageMatch();
-    if (!m) { if (curtainReason) { curtainReason = null; VB.curtain.hide(); } pageAllowed = false; return; }
-    if (pageAllowed || readAllowed()) return;
+    if (!m) {
+      const was = !!curtainReason || pageAllowed;
+      curtainReason = null;
+      pageAllowed = false;
+      VB.curtain.hide();
+      if (was) fullScan();                                  // the page is no longer special: hide cards again
+      return;
+    }
+    if (pageAllowed || readAllowed()) { pageAllowed = true; clearMarks(); return; }
     if (VB.curtain.isUp()) { VB.curtain.refresh(); return; }
     curtainReason = m;
     VB.curtain.show({
@@ -448,6 +520,7 @@
         S.save({ trusted: [...t] }).catch(() => {});
       },
     });
+    clearMarks();
   }
 
   /* ---------- settings ---------- */
@@ -457,6 +530,7 @@
     for (const c of [...marked]) unmark(c);
     marked.clear();
     root.removeAttribute('data-vb-reveal');
+    clearShadows();
     if (VB.curtain) VB.curtain.hide();
     curtainReason = null;
     updateCount();
@@ -470,6 +544,7 @@
     if (S.isPaused(s)) pauseTimer = setTimeout(load, Math.min(s.pausedUntil - Date.now() + 150, 2147000000));
     if (!active) { teardown(); return; }
     root.setAttribute('data-vb-reveal', s.reveal);
+    refreshShadows();
     startObserving();
     for (const c of [...marked]) {
       if (!c.isConnected) { marked.delete(c); continue; }
