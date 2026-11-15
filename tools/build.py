@@ -1,0 +1,127 @@
+"""Build Vice Blind for Chromium browsers and Firefox from one source.
+
+Usage: python tools/build.py
+Writes dist/chrome/, dist/firefox/ and dist/vice-blind-{chrome,firefox}-<version>.zip
+"""
+import json
+import shutil
+import sys
+import zipfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+SRC = ROOT / "src"
+DIST = ROOT / "dist"
+
+GECKO_ID = "vice-blind@rocmine.net"
+
+
+def load_manifest() -> dict:
+    return json.loads((SRC / "manifest.json").read_text(encoding="utf-8"))
+
+
+def chrome_manifest(m: dict) -> dict:
+    return dict(m)  # the source manifest is already the Chromium flavour
+
+
+def firefox_manifest(m: dict) -> dict:
+    f = {k: v for k, v in m.items() if k not in ("background", "minimum_chrome_version")}
+    # Firefox runs MV3 background code as an event page: list every script, no service_worker.
+    f["background"] = {"scripts": ["shared/api.js", "shared/settings.js", "background.js"]}
+    f["browser_specific_settings"] = {
+        "gecko": {
+            "id": GECKO_ID,
+            "strict_min_version": "140.0",
+            # Required for new add-ons on addons.mozilla.org: this extension collects nothing.
+            "data_collection_permissions": {"required": ["none"]},
+        },
+        "gecko_android": {"strict_min_version": "142.0"},
+    }
+    return f
+
+
+def referenced_files(m: dict) -> set:
+    refs = set(m.get("icons", {}).values())
+    act = m.get("action", {})
+    refs.add(act.get("default_popup", ""))
+    refs.update(act.get("default_icon", {}).values())
+    refs.add(m.get("options_ui", {}).get("page", ""))
+    bg = m.get("background", {})
+    if "service_worker" in bg:
+        refs.add(bg["service_worker"])
+    refs.update(bg.get("scripts", []))
+    for cs in m.get("content_scripts", []):
+        refs.update(cs.get("js", []))
+        refs.update(cs.get("css", []))
+    for war in m.get("web_accessible_resources", []):
+        refs.update(war.get("resources", []))
+    return {r for r in refs if r}
+
+
+def copy_tree(dest: Path) -> None:
+    if dest.exists():
+        shutil.rmtree(dest)
+    shutil.copytree(SRC, dest, ignore=shutil.ignore_patterns("manifest.json", "*.svg", "icon-512.png", ".DS_Store", "Thumbs.db"))
+    # keep the vector icon out of the package; the PNGs are what the manifest uses
+
+
+def check(dest: Path, m: dict, label: str) -> list:
+    problems = []
+    for ref in sorted(referenced_files(m)):
+        if not (dest / ref).exists():
+            problems.append(f"{label}: manifest references missing file {ref}")
+    if len(m["description"]) > 132:
+        problems.append(f"{label}: description is {len(m['description'])} chars (store limit 132)")
+    if len(m["name"]) > 75:
+        problems.append(f"{label}: name is too long")
+    # Every page script/stylesheet/image referenced from html must exist.
+    import re
+    for html in dest.rglob("*.html"):
+        text = html.read_text(encoding="utf-8")
+        for attr in re.findall(r'(?:src|href)="([^"#]+)"', text):
+            if attr.startswith(("http:", "https:", "data:", "mailto:")):
+                continue
+            if not (html.parent / attr).resolve().exists():
+                problems.append(f"{label}: {html.relative_to(dest)} references missing {attr}")
+    for css in dest.rglob("*.css"):
+        text = css.read_text(encoding="utf-8")
+        for ref in re.findall(r"url\('?([^)'\"]+)'?\)", text):
+            if ref.startswith(("data:", "http:", "https:", "#", "%23")):
+                continue
+            if not (css.parent / ref).resolve().exists():
+                problems.append(f"{label}: {css.relative_to(dest)} references missing {ref}")
+    return problems
+
+
+def zip_dir(src: Path, out: Path) -> None:
+    if out.exists():
+        out.unlink()
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+        for p in sorted(src.rglob("*")):
+            if p.is_file():
+                z.write(p, p.relative_to(src).as_posix())
+
+
+def main() -> int:
+    m = load_manifest()
+    version = m["version"]
+    DIST.mkdir(exist_ok=True)
+    problems = []
+    for label, make in (("chrome", chrome_manifest), ("firefox", firefox_manifest)):
+        dest = DIST / label
+        copy_tree(dest)
+        manifest = make(m)
+        (dest / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        problems += check(dest, manifest, label)
+        out = DIST / f"vice-blind-{label}-{version}.zip"
+        zip_dir(dest, out)
+        print(f"{label}: {out.name} ({out.stat().st_size / 1024:.0f} KB)")
+    if problems:
+        print("\n".join(problems), file=sys.stderr)
+        return 1
+    print("ok")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Welcome to Vice Blind</title>
+  <link rel="stylesheet" href="../ui/base.css">
+  <link rel="stylesheet" href="../content/content.css">
+  <link rel="stylesheet" href="../ui/demo.css">
+  <link rel="stylesheet" href="welcome.css">
+  <script src="../shared/api.js"></script>
+  <script src="../shared/settings.js"></script>
+  <script src="../ui/motion.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-head">
+    <span class="logo">
+      <img src="../assets/icons/icon-48.png" width="28" height="28" alt="">
+      <span class="logotype display">Vice Blind</span>
+    </span>
+    <span class="badge"><i></i><span>Shield on</span></span>
+  </header>
+
+  <main id="main">
+    <div class="grid poster">
+      <section class="left">
+        <p class="role" id="role" aria-hidden="true"></p>
+        <div class="title-block"><h1 class="display" id="title">Stay Blind.</h1></div>
+        <p class="tagline reveal d-5">Vice Blind hides GTA VI posts, videos, thumbnails and headlines on every site, so you can wait for the PC version without a single spoiler.</p>
+        <div class="cta reveal d-6">
+          <a class="btn" href="#setup">Set it up</a>
+          <button class="btn ghost" id="openSettings" type="button">Open settings</button>
+        </div>
+        <ul class="hides reveal d-7" aria-label="What it hides">
+          <li class="chip">Posts</li><li class="chip">Videos</li><li class="chip">Thumbnails</li><li class="chip">Headlines</li><li class="chip">Whole pages</li>
+        </ul>
+        <p class="dim fine reveal d-8">Works in Chrome, Edge, Brave, Opera and Firefox. No accounts. No network requests.</p>
+      </section>
+
+      <section class="right" id="setup" aria-label="Set up">
+        <div class="row step reveal d-5">
+          <span class="label"><span class="accent">01</span> Pin it</span>
+          <p class="muted">Open the puzzle icon in your toolbar and pin Vice Blind. The number on it counts what was hidden on the page.</p>
+        </div>
+        <div class="row step reveal d-6">
+          <span class="label"><span class="accent">02</span> Level</span>
+          <div>
+            <div class="seg" id="level" aria-label="Level">
+              <button type="button" data-value="light">Light</button>
+              <button type="button" data-value="balanced">Balanced</button>
+              <button type="button" data-value="strict">Strict</button>
+            </div>
+            <p class="hint" id="levelHint"></p>
+          </div>
+        </div>
+        <div class="row step reveal d-7">
+          <span class="label"><span class="accent">03</span> Try it</span>
+          <div>
+            <p class="muted">Two of these are about GTA VI. Click one twice to reveal it. The middle one is fine, so it stays.</p>
+            <div class="feed" id="feed"></div>
+          </div>
+        </div>
+        <div class="row step reveal d-8">
+          <span class="label"><span class="accent">04</span> Done</span>
+          <p class="muted">That is it. Vice Blind is on. Pause it, trust a site or add your own words from the toolbar icon.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="ticker" id="ticker" aria-hidden="true"></div>
+    <div class="foot-row">
+      <span class="dim">not affiliated with Rockstar Games or Take-Two</span>
+      <button class="linkbtn" id="motion" type="button" aria-pressed="true">Motion: on</button>
+    </div>
+  </footer>
+
+  <script src="../ui/demo.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

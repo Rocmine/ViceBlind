@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vice Blind</title>
+  <link rel="stylesheet" href="../ui/base.css">
+  <link rel="stylesheet" href="popup.css">
+  <script src="../shared/api.js"></script>
+  <script src="../shared/settings.js"></script>
+  <script src="../ui/motion.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <span class="logo">
+      <img src="../assets/icons/icon-48.png" width="24" height="24" alt="">
+      <span class="logotype display">Vice Blind</span>
+    </span>
+    <span class="badge" id="status"><i></i><span id="statusText">Shield on</span></span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="role" id="role" aria-hidden="true"></p>
+      <div class="title-block"><h1 class="display" id="title">Stay Blind.</h1></div>
+    </section>
+
+    <div id="notice" class="notice" hidden role="status"></div>
+
+    <div class="row reveal d-4">
+      <span class="label" id="lShield">Shield</span>
+      <div class="split">
+        <p id="shieldText" class="muted">GTA VI is hidden on every site.</p>
+        <button class="switch" id="shield" aria-labelledby="lShield"></button>
+      </div>
+    </div>
+
+    <div class="row reveal d-5" id="pageRow">
+      <span class="label">This page</span>
+      <div>
+        <p class="host" id="host">&nbsp;</p>
+        <div class="split">
+          <p id="pageStat" class="muted"></p>
+          <button class="btn small ghost" id="trust" hidden></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row reveal d-6">
+      <span class="label" id="lLevel">Level</span>
+      <div>
+        <div class="seg" id="level" aria-labelledby="lLevel">
+          <button type="button" data-value="light">Light</button>
+          <button type="button" data-value="balanced">Balanced</button>
+          <button type="button" data-value="strict">Strict</button>
+        </div>
+        <p class="hint" id="levelHint"></p>
+      </div>
+    </div>
+
+    <div class="row reveal d-6">
+      <span class="label" id="lStyle">Style</span>
+      <div class="seg" id="style" aria-labelledby="lStyle">
+        <button type="button" data-value="blur">Blur</button>
+        <button type="button" data-value="cover">Cover</button>
+        <button type="button" data-value="remove">Remove</button>
+      </div>
+    </div>
+
+    <div class="row reveal d-7">
+      <span class="label">Pause</span>
+      <div id="pause"></div>
+    </div>
+
+    <div class="stats reveal d-8">
+      <div class="stat"><b class="mono-num" id="sHits">0</b><span class="label">Hidden</span></div>
+      <div class="stat"><b class="mono-num" id="sDays">0</b><span class="label">Days blind</span></div>
+      <div class="stat"><b class="mono-num" id="sPc">TBA</b><span class="label" id="sPcLabel">PC date</span></div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <button class="linkbtn" id="openOptions" type="button">Settings</button>
+    <button class="linkbtn" id="motion" type="button" aria-pressed="true">Motion: on</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

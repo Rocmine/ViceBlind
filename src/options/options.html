@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vice Blind settings</title>
+  <link rel="stylesheet" href="../ui/base.css">
+  <link rel="stylesheet" href="../content/content.css">
+  <link rel="stylesheet" href="../ui/demo.css">
+  <link rel="stylesheet" href="options.css">
+  <script src="../shared/api.js"></script>
+  <script src="../shared/settings.js"></script>
+  <script src="../shared/keywords.js"></script>
+  <script src="../ui/motion.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to settings</a>
+
+  <header class="site-head" id="head">
+    <a class="logo" href="#top" aria-label="Vice Blind">
+      <img src="../assets/icons/icon-48.png" width="28" height="28" alt="">
+      <span class="logotype display">Vice Blind</span>
+    </a>
+    <nav id="nav" aria-label="Settings sections">
+      <a href="#protection">Protection</a>
+      <a href="#words">Words</a>
+      <a href="#sites">Sites</a>
+      <a href="#release">Release</a>
+      <a href="#data">Data</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+    <span class="badge" id="status"><i></i><span id="statusText">Shield on</span></span>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <main id="main">
+    <div id="top" class="grid">
+      <section class="page-head">
+        <p class="crumb reveal d-0">~/vice-blind / settings</p>
+        <div class="title-block"><h1 class="display" id="title">Settings</h1></div>
+        <p class="lede reveal d-5">Every change saves the moment you make it. Nothing leaves your browser.</p>
+      </section>
+
+      <section class="sec reveal d-6" id="protection">
+        <h2 class="label"><span class="num">01</span> Protection</h2>
+        <div class="content">
+          <div class="opt">
+            <div class="opt-text"><h3>Level</h3><p class="muted">How much counts as GTA VI.</p></div>
+            <div class="opt-ctl">
+              <div class="seg" id="level" aria-label="Level">
+                <button type="button" data-value="light">Light</button>
+                <button type="button" data-value="balanced">Balanced</button>
+                <button type="button" data-value="strict">Strict</button>
+              </div>
+              <p class="hint" id="levelHint"></p>
+            </div>
+          </div>
+          <div class="opt">
+            <div class="opt-text"><h3>Style</h3><p class="muted">What a hidden post looks like. Try the card.</p></div>
+            <div class="opt-ctl">
+              <div class="seg" id="style" aria-label="Style">
+                <button type="button" data-value="blur">Blur</button>
+                <button type="button" data-value="cover">Cover</button>
+                <button type="button" data-value="remove">Remove</button>
+              </div>
+              <div class="demo" id="demo"></div>
+            </div>
+          </div>
+          <div class="opt">
+            <div class="opt-text"><h3>Reveal</h3><p class="muted">How you uncover a hidden post. Two clicks means a stray click never spoils it.</p></div>
+            <div class="opt-ctl">
+              <div class="seg" id="reveal" aria-label="Reveal">
+                <button type="button" data-value="two">Two clicks</button>
+                <button type="button" data-value="one">One click</button>
+                <button type="button" data-value="locked">Locked</button>
+              </div>
+            </div>
+          </div>
+          <div class="opt">
+            <div class="opt-text"><h3>Page curtain</h3><p class="muted">When a whole page is about GTA VI (its title, heading or address), cover the page with a full screen and pause its video.</p></div>
+            <div class="opt-ctl"><button class="switch" id="curtain" aria-label="Page curtain"></button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="words">
+        <h2 class="label"><span class="num">02</span> Word lists</h2>
+        <div class="content">
+          <p class="muted intro">Click a word to switch it off. Core words stay on. Packs outside your level are dimmed.</p>
+          <div id="packs"></div>
+          <div class="opt stack">
+            <div class="opt-text"><h3>Your own words</h3><p class="muted">Add a name, a game or a streamer. Use <code>*</code> as a wildcard: <code>trailer*</code> also matches trailers.</p></div>
+            <div class="opt-ctl">
+              <form class="field" id="customForm" autocomplete="off">
+                <input id="customInput" type="text" maxlength="60" placeholder="Add a word, press Enter" aria-label="Add a word">
+                <button class="btn small" type="submit">Add</button>
+              </form>
+              <div class="chips" id="customChips"></div>
+            </div>
+          </div>
+          <div class="opt stack">
+            <div class="opt-text"><h3>Test the filter</h3><p class="muted">Type anything. Matches light up.</p></div>
+            <div class="opt-ctl">
+              <div class="field"><textarea id="testInput" rows="3" aria-label="Text to test" spellcheck="false">Is GTA 6 coming to PC? Jason Duval and Lucia Caminos in Vice City. Grand Theft Auto V is fine.</textarea></div>
+              <p class="test-out" id="testOut" aria-live="polite"></p>
+              <p class="hint" id="testCount"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="sites">
+        <h2 class="label"><span class="num">03</span> Trusted sites</h2>
+        <div class="content">
+          <p class="muted intro">Vice Blind does nothing on these sites. Subdomains are included.</p>
+          <form class="field" id="siteForm" autocomplete="off">
+            <input id="siteInput" type="text" maxlength="253" placeholder="example.com" aria-label="Site to trust" inputmode="url">
+            <button class="btn small" type="submit">Trust</button>
+          </form>
+          <ul class="sites" id="siteList"></ul>
+        </div>
+      </section>
+
+      <section class="sec" id="release">
+        <h2 class="label"><span class="num">04</span> Release day</h2>
+        <div class="content">
+          <p class="muted intro">Set the day GTA VI is playable on your PC. When it arrives, Vice Blind offers to switch itself off.</p>
+          <div class="field date">
+            <input id="pcDate" type="date" aria-label="PC release date">
+            <button class="btn small ghost" id="pcClear" type="button">Clear</button>
+          </div>
+          <p class="hint" id="pcHint"></p>
+        </div>
+      </section>
+
+      <section class="sec" id="data">
+        <h2 class="label"><span class="num">05</span> Your data</h2>
+        <div class="content">
+          <p class="muted intro">Move your settings between browsers, or start over.</p>
+          <div class="chips actions">
+            <button class="btn small" id="export" type="button">Export</button>
+            <button class="btn small ghost" id="importBtn" type="button">Import</button>
+            <button class="btn small danger" id="reset" type="button">Reset</button>
+            <input id="importFile" type="file" accept="application/json,.json" hidden>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="privacy">
+        <h2 class="label"><span class="num">06</span> Privacy</h2>
+        <div class="content">
+          <ul class="facts">
+            <li><b>No network.</b> Vice Blind makes no requests. Everything runs on the page in your browser.</li>
+            <li><b>No tracking.</b> No analytics, no accounts, no ads.</li>
+            <li><b>Your settings</b> sit in your browser's own storage. If you use browser sync, your browser syncs them.</li>
+            <li><b>Not affiliated</b> with Rockstar Games or Take-Two Interactive. Grand Theft Auto is their trademark.</li>
+          </ul>
+          <p class="dim version" id="version"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="ticker" id="ticker" aria-hidden="true"></div>
+    <div class="foot-row">
+      <span class="dim">vice blind / stay blind</span>
+      <button class="linkbtn" id="motion" type="button" aria-pressed="true">Motion: on</button>
+    </div>
+  </footer>
+
+  <script src="../ui/demo.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
