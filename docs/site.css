@@ -65,3 +65,9 @@ code { font: 600 0.88em/1 var(--sans); color: var(--pink-soft); background: rgba
   .top nav a:not(:last-child) { display: none; }
   .hero .sign { font-size: clamp(4.6rem, 26vw, 7rem); }
 }
+
+.note { max-width: 46rem; padding-block: clamp(1.5rem, 5vh, 3rem); text-align: center; }
+.note h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 0.9rem; }
+.note p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; margin-bottom: 0.9rem; }
+.note .sign-off { margin-top: 1.3rem; }
+.foot-links { display: inline-flex; gap: 1.2rem; }
