@@ -1,7 +1,7 @@
-"""Render the Vice Blind icons: a navy rounded square with three gradient "blind slats".
+"""Render the Vice Blind icons: a sunset sun cut by window-blind slats, on a midnight-plum tile.
 
 Usage: python tools/make_icons.py
-Writes src/assets/icons/icon-{16,32,48,128}.png, icon-off-{16,32,48,128}.png and icon.svg.
+Writes src/assets/icons/icon-{16,32,48,128,512}.png, icon-off-{16,32,48,128}.png and icon.svg.
 """
 from pathlib import Path
 
@@ -11,22 +11,16 @@ OUT = Path(__file__).resolve().parent.parent / "src" / "assets" / "icons"
 SIZES = (16, 32, 48, 128)
 S = 1024  # supersample canvas
 
-NAVY = (6, 6, 15)
-NAVY_LIFT = (16, 14, 32)
-STOPS_ON = [(0.0, (59, 109, 255)), (0.5, (138, 77, 255)), (1.0, (238, 22, 129))]
-STOPS_OFF = [(0.0, (120, 120, 132)), (1.0, (84, 84, 96))]
+PLUM = (27, 10, 51)
+PLUM_LIFT = (74, 18, 86)   # warm glow near the horizon
+STOPS_ON = [(0.0, (255, 209, 102)), (0.48, (255, 138, 91)), (1.0, (255, 62, 150))]
+STOPS_OFF = [(0.0, (150, 146, 160)), (1.0, (96, 92, 110))]
 
-# Geometry on a 1024 canvas (shared with the SVG below).
-PAD = 150            # inner margin left/right
-SLAT_H = 168
-GAP = 62
+# Sun geometry on the 1024 canvas (shared with the SVG).
+CX, CY, R = 512, 506, 330
 RADIUS_BG = 230
-RADIUS_SLAT = 40
-SLAT_RIGHT = S - PAD - 120   # slats stop short of the cord
-CORD_X = S - PAD - 34
-CORD_W = 26
-CORD_DROP = 70
-BEAD_R = 44
+# Slits cut from the lower half; each one thicker than the last, like a blind opening.
+SLITS = [(528, 40), (616, 56), (712, 72), (816, 40)]  # (y, height)
 
 
 def lerp(a, b, t):
@@ -40,70 +34,53 @@ def gradient_color(stops, t):
     return stops[-1][1]
 
 
-def slat_rows():
-    total = 3 * SLAT_H + 2 * GAP
-    top = (S - total) // 2 - 48  # lifted so slats + cord bead sit centred
-    return [(top + i * (SLAT_H + GAP), top + i * (SLAT_H + GAP) + SLAT_H) for i in range(3)]
-
-
 def render(stops) -> Image.Image:
     img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
 
-    # Background: rounded navy square with a soft radial lift near the top.
-    bg = Image.new("RGBA", (S, S), NAVY + (255,))
-    lift = Image.new("L", (S, S), 0)
-    ld = ImageDraw.Draw(lift)
-    for r in range(S // 2, 0, -8):
-        a = int(150 * (1 - r / (S / 2)) ** 1.6)
-        ld.ellipse((S / 2 - r * 1.3, S * 0.3 - r, S / 2 + r * 1.3, S * 0.3 + r), fill=a)
-    bg.paste(Image.new("RGBA", (S, S), NAVY_LIFT + (255,)), (0, 0), lift)
+    # Tile: plum with a warm lift rising from the bottom edge.
+    bg = Image.new("RGBA", (S, S), PLUM + (255,))
+    for y in range(S):
+        t = max(0.0, (y - S * 0.45) / (S * 0.55)) ** 2
+        ImageDraw.Draw(bg).line([(0, y), (S, y)], fill=lerp(PLUM, PLUM_LIFT, t) + (255,))
     mask = Image.new("L", (S, S), 0)
     ImageDraw.Draw(mask).rounded_rectangle((0, 0, S - 1, S - 1), RADIUS_BG, fill=255)
     img.paste(bg, (0, 0), mask)
 
-    # Horizontal gradient strip, cut out by the three slat shapes.
+    # Sun: vertical gradient clipped to a disc, then slit by the slats.
     grad = Image.new("RGBA", (S, S))
     gd = ImageDraw.Draw(grad)
-    for x in range(S):
-        t = min(max((x - PAD) / (S - 2 * PAD), 0), 1)
-        gd.line([(x, 0), (x, S)], fill=gradient_color(stops, t) + (255,))
-    slats = Image.new("L", (S, S), 0)
-    sd = ImageDraw.Draw(slats)
-    rows = slat_rows()
-    for y0, y1 in rows:
-        sd.rounded_rectangle((PAD, y0, SLAT_RIGHT, y1), RADIUS_SLAT, fill=255)
-    # Pull cord on the right: what makes three bars read as a window blind.
-    sd.rounded_rectangle((CORD_X - CORD_W // 2, rows[0][0] + 20, CORD_X + CORD_W // 2, rows[-1][1] + CORD_DROP), CORD_W // 2, fill=255)
-    cy = rows[-1][1] + CORD_DROP
-    sd.ellipse((CORD_X - BEAD_R, cy - BEAD_R, CORD_X + BEAD_R, cy + BEAD_R), fill=255)
-    img.paste(grad, (0, 0), slats)
+    for y in range(S):
+        t = min(max((y - (CY - R)) / (2 * R), 0), 1)
+        gd.line([(0, y), (S, y)], fill=gradient_color(stops, t) + (255,))
+    sun = Image.new("L", (S, S), 0)
+    sd = ImageDraw.Draw(sun)
+    sd.ellipse((CX - R, CY - R, CX + R, CY + R), fill=255)
+    for y, h in SLITS:
+        sd.rectangle((0, y, S, y + h), fill=0)
+    img.paste(grad, (0, 0), sun)
     return img
 
 
 def svg() -> str:
-    rows = slat_rows()
-    rects = "\n".join(
-        f'  <rect x="{PAD}" y="{y0}" width="{SLAT_RIGHT - PAD}" height="{SLAT_H}" rx="{RADIUS_SLAT}" fill="url(#g)"/>'
-        for y0, _ in rows
-    )
-    cy = rows[-1][1] + CORD_DROP
-    rects += (f'\n  <rect x="{CORD_X - CORD_W // 2}" y="{rows[0][0] + 20}" width="{CORD_W}" '
-              f'height="{cy - rows[0][0] - 20}" rx="{CORD_W // 2}" fill="url(#g)"/>'
-              f'\n  <circle cx="{CORD_X}" cy="{cy}" r="{BEAD_R}" fill="url(#g)"/>')
+    slits = "\n".join(f'      <rect x="0" y="{y}" width="{S}" height="{h}" fill="#000"/>' for y, h in SLITS)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {S} {S}">
   <defs>
-    <linearGradient id="g" x1="{PAD}" y1="0" x2="{S - PAD}" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#3b6dff"/>
-      <stop offset=".5" stop-color="#8a4dff"/>
-      <stop offset="1" stop-color="#ee1681"/>
+    <linearGradient id="sun" x1="0" y1="{CY - R}" x2="0" y2="{CY + R}" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd166"/>
+      <stop offset=".48" stop-color="#ff8a5b"/>
+      <stop offset="1" stop-color="#ff3e96"/>
     </linearGradient>
-    <radialGradient id="r" cx=".5" cy=".3" r=".65">
-      <stop offset="0" stop-color="#100e20"/>
-      <stop offset="1" stop-color="#06060f"/>
-    </radialGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".45" stop-color="#1b0a33"/>
+      <stop offset="1" stop-color="#4a1256"/>
+    </linearGradient>
+    <mask id="slats">
+      <rect width="{S}" height="{S}" fill="#fff"/>
+{slits}
+    </mask>
   </defs>
-  <rect width="{S}" height="{S}" rx="{RADIUS_BG}" fill="url(#r)"/>
-{rects}
+  <rect width="{S}" height="{S}" rx="{RADIUS_BG}" fill="url(#tile)"/>
+  <circle cx="{CX}" cy="{CY}" r="{R}" fill="url(#sun)" mask="url(#slats)"/>
 </svg>
 """
 

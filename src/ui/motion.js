@@ -1,4 +1,4 @@
-/* Vice Blind UI helpers: motion switch, big-title recipe, typewriter, ticker, toast, segmented control.
+/* Vice Blind UI helpers: motion switch, neon title, illustrations, toast, segmented control, switch.
  * Load after shared/api.js and shared/settings.js, in <head>, so data-motion is set before first paint.
  */
 (function (root) {
@@ -29,78 +29,17 @@
     return next;
   };
 
+  // The big title is a neon sign: plain text, lit as a whole (the flicker-on is CSS).
+  UI.title = function title(target, text) {
+    target.textContent = Array.isArray(text) ? text.join(' ') : text;
+  };
+
+  // Illustrations (see shared/art.js). Static SVG strings, no user data.
+  let artId = 0;
+  UI.sun = (target) => { target.classList.add('sun'); VB.art.mount(target, VB.art.sun('p' + artId++)); };
+  UI.palms = (target) => { target.classList.add('palms'); VB.art.mount(target, VB.art.palms()); };
+
   const el = (tag, cls, text) => { const n = doc.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
-
-  // Build the big animated title. `lines` e.g. ['STAY', 'BLIND.'].
-  // The visible letters are aria-hidden; an sr-only copy carries the real text.
-  UI.title = function title(target, lines) {
-    target.textContent = '';
-    target.append(el('span', 'sr-only', lines.join(' ')));
-    let i = 0;
-    for (const line of lines) {
-      const l = el('span', 'title-line');
-      l.setAttribute('aria-hidden', 'true');
-      for (const c of line) {
-        const s = el('span', c === ' ' ? 'ch sp' : 'ch', c === ' ' ? ' ' : c);
-        s.style.setProperty('--i', String(i++));
-        l.append(s);
-      }
-      target.append(l);
-    }
-    const block = target.closest('.title-block');
-    const letters = [...target.querySelectorAll('.ch')];
-    // Release the line mask once the last letter has landed so lifted letters are not clipped.
-    const done = UI.motionOn() ? 250 + letters.length * 38 + 950 : 0;
-    setTimeout(() => block && block.classList.add('intro-done'), done);
-
-    if (matchMedia('(pointer: fine)').matches) {
-      let mx = -9999, my = -9999, raf = 0;
-      const tick = () => {
-        raf = 0;
-        const base = target.getBoundingClientRect();
-        for (const l of letters) {
-          const cx = base.left + l.offsetLeft + l.offsetWidth / 2;
-          const cy = base.top + l.offsetTop + l.offsetHeight / 2;
-          const t = Math.max(0, 1 - Math.hypot(mx - cx, my - cy) / 150);
-          l.style.setProperty('--near', (t * t * (3 - 2 * t)).toFixed(3));
-        }
-      };
-      doc.addEventListener('pointermove', (e) => { if (!UI.motionOn()) return; mx = e.clientX; my = e.clientY; if (!raf) raf = requestAnimationFrame(tick); });
-      doc.addEventListener('pointerleave', () => { mx = my = -9999; if (!raf) raf = requestAnimationFrame(tick); });
-    } else {
-      // Touch: a tap sends one wave through the letters.
-      target.addEventListener('click', () => {
-        if (!UI.motionOn() || !target.animate) return;
-        letters.forEach((l, k) => l.animate([{ translate: '0 0' }, { translate: '0 -0.12em', color: '#a9c1ff' }, { translate: '0 0' }], { duration: 520, delay: k * 26, easing: 'cubic-bezier(.22,1,.36,1)' }));
-      });
-    }
-  };
-
-  // Typewriter on a line, 34 ms per character. Keeps a blinking cursor at the end.
-  UI.type = function type(target, text, cb) {
-    target.textContent = '';
-    const txt = doc.createTextNode('');
-    const cur = el('span', 'cursor');
-    cur.setAttribute('aria-hidden', 'true');
-    target.append(txt, cur);
-    if (!UI.motionOn()) { txt.nodeValue = text; if (cb) cb(); return; }
-    let i = 0;
-    const step = () => { txt.nodeValue = text.slice(0, ++i); if (i < text.length) setTimeout(step, 34); else if (cb) cb(); };
-    setTimeout(step, 340);
-  };
-
-  // Seamless ticker: six identical copies, each ending with the separator.
-  UI.ticker = function ticker(target, text) {
-    target.textContent = '';
-    const run = el('span', 'ticker-run');
-    run.style.setProperty('--n', '6');
-    for (let i = 0; i < 6; i++) {
-      const s = el('span', 'ticker-items', text.replace(/\s+$/, '\u00a0'));
-      if (i) s.setAttribute('aria-hidden', 'true');
-      run.append(s);
-    }
-    target.append(run);
-  };
 
   let toastTimer = 0;
   UI.toast = function toast(msg) {

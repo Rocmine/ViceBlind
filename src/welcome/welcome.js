@@ -9,9 +9,8 @@
 
   let s = await UI.init();
 
-  UI.title($('title'), ['Stay', 'Blind.']);
-  UI.type($('role'), '~/ gta vi spoiler shield for pc players');
-  UI.ticker($('ticker'), 'NO SPOILERS · WAIT FOR PC · STAY BLIND · ');
+  UI.sun($('sun'));
+  UI.palms($('palms'));
 
   const HINTS = {
     light: 'Core only: GTA 6 and GTA VI in every spelling.',

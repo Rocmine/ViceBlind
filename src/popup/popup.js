@@ -12,8 +12,8 @@
   let pageHost = '';
   let info = null;
 
-  UI.title($('title'), ['Stay', 'Blind.']);
-  UI.type($('role'), '~/ gta vi spoiler shield');
+  UI.sun($('sun'));
+  UI.palms($('palms'));
 
   const HINTS = {
     light: 'GTA 6 and GTA VI in every spelling.',

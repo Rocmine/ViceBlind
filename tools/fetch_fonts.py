@@ -1,7 +1,7 @@
-"""Download the two self-hosted fonts (latin subset, variable woff2) and their OFL licences.
+"""Download the two self-hosted fonts (latin subset woff2) and their OFL licences.
 
 Usage: python tools/fetch_fonts.py
-Writes src/assets/fonts/{Unbounded-latin.woff2, JetBrainsMono-latin.woff2, OFL-*.txt}.
+Writes src/assets/fonts/{Yellowtail-latin.woff2, Jost-latin.woff2, LICENSE/OFL files}.
 """
 import re
 import sys
@@ -13,12 +13,12 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/130.0 Safari/537.36")
 
 FONTS = {
-    "Unbounded-latin.woff2": "https://fonts.googleapis.com/css2?family=Unbounded:wght@400..900&display=swap",
-    "JetBrainsMono-latin.woff2": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400..700&display=swap",
+    "Yellowtail-latin.woff2": "https://fonts.googleapis.com/css2?family=Yellowtail&display=swap",
+    "Jost-latin.woff2": "https://fonts.googleapis.com/css2?family=Jost:wght@400..700&display=swap",
 }
 LICENCES = {
-    "OFL-Unbounded.txt": "https://raw.githubusercontent.com/google/fonts/main/ofl/unbounded/OFL.txt",
-    "OFL-JetBrainsMono.txt": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt",
+    "LICENSE-Yellowtail.txt": "https://raw.githubusercontent.com/google/fonts/main/apache/yellowtail/LICENSE.txt",
+    "OFL-Jost.txt": "https://raw.githubusercontent.com/google/fonts/main/ofl/jost/OFL.txt",
 }
 
 

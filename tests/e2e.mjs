@@ -95,8 +95,8 @@ try {
     const o = (e) => getComputedStyle(e, '::after').content;
     return { light: o(light), shadow: o(shadow), child: getComputedStyle(shadow.firstElementChild).filter };
   });
-  check('overlay renders on a normal card', /SPOILER/.test(overlay.light), overlay.light);
-  check('overlay renders inside a shadow root', /SPOILER/.test(overlay.shadow), overlay.shadow);
+  check('overlay renders on a normal card', /Spoiler hidden/.test(overlay.light), overlay.light);
+  check('overlay renders inside a shadow root', /Spoiler hidden/.test(overlay.shadow), overlay.shadow);
   check('card children are blurred directly', /blur/.test(overlay.child), overlay.child);
   check('html/body are never hidden', await page.evaluate(() => !document.documentElement.hasAttribute('data-vb') && !document.body.hasAttribute('data-vb')));
   check('typed text is untouched', await page.evaluate(() => document.getElementById('ta').value === 'GTA 6 notes' && document.getElementById('ce').textContent === 'my draft about GTA 6'));
@@ -197,6 +197,10 @@ try {
   check('nothing is hidden individually while the curtain is up', await cp.evaluate(() => document.querySelectorAll('[data-vb]').length === 0));
   check('page video is paused behind the curtain', await cp.evaluate(() => document.getElementById('v').paused));
   check('page scroll is locked', await cp.evaluate(() => document.documentElement.style.overflow === 'hidden'));
+  check('curtain fonts load from the extension', await cp.evaluate(async () => {
+    await document.fonts.load('1em "Vice Blind Script"');
+    return document.fonts.check('1em "Vice Blind Script"');
+  }));
   await cp.screenshot({ path: path.join(OUT, 'curtain.png') });
   await cp.setViewportSize({ width: 390, height: 780 });
   await sleep(400);
@@ -292,6 +296,10 @@ try {
   await wel.reload();
   await sleep(2600);
   await wel.screenshot({ path: path.join(OUT, 'welcome.png') });
+  check('welcome: neon script and sans fonts actually load', await wel.evaluate(async () => {
+    await Promise.all([document.fonts.load('1em Yellowtail'), document.fonts.load('600 1em Jost')]);
+    return document.fonts.check('1em Yellowtail') && document.fonts.check('600 1em Jost');
+  }));
   await wel.click('#feed .demo-card >> nth=0');
   await wel.click('#feed .demo-card >> nth=0');
   check('welcome: demo card reveals on two clicks', (await wel.getAttribute('#feed .demo-card >> nth=0', 'data-vb')) === 'shown');

@@ -12,8 +12,7 @@
   document.documentElement.classList.add('js');
   let s = await UI.init();
 
-  UI.title($('title'), ['Settings']);
-  UI.ticker($('ticker'), 'NO SPOILERS · WAIT FOR PC · STAY BLIND · ');
+  UI.sun($('sun'));
 
   const set = async (patch, quiet) => {
     Object.assign(s, patch);

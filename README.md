@@ -12,6 +12,14 @@ Chrome, Edge, Brave, Opera, Vivaldi and Firefox. No accounts, no analytics, no n
 - Works inside shadow DOM (YouTube, Reddit and other web-component sites) and on pages that load content as you scroll.
 - Never touches text you are typing (inputs, textareas, editable fields).
 
+## Design
+
+Neon night on Ocean Drive. Midnight plum, flamingo neon (`#ff3e96`), Miami teal (`#2de2d0`), sunset coral, stucco-sand text. Yellowtail (brush script) for the neon sign, Jost for everything else; both self-hosted (Apache-2.0 and OFL licences in `src/assets/fonts/`).
+
+- The mark is a sunset sun cut by blind slats (it is also a window blind). `src/shared/art.js` holds the sun and the palm strip as one source used by the popup, welcome page and curtain; `tools/make_icons.py` draws the icon.
+- Hidden cards get plum slat stripes over a blur ("light through blinds"). The blocked page is a neon "Not yet." sign.
+- One motion moment: the slats open and the sign flickers on twice (about 1.4 s). The Motion switch in the popup and settings turns it off.
+
 ## Install (unpacked, for now)
 
 Build first: `python tools/build.py` (writes `dist/chrome`, `dist/firefox` and two zips).
@@ -39,7 +47,7 @@ npm install                 # playwright + web-ext (dev only)
 npm test                    # matcher unit tests (76)
 npm run build
 npx web-ext lint --source-dir dist/firefox
-VB_CHANNEL=msedge npm run e2e              # loads dist/chrome in a temporary profile, 73 checks + screenshots in test-results/
+VB_CHANNEL=msedge npm run e2e              # loads dist/chrome in a temporary profile, 75 checks + screenshots in test-results/
 VB_CHANNEL=msedge node tests/e2e-sites.mjs # live YouTube / Wikipedia smoke test (needs internet)
 ```
 

@@ -37,6 +37,7 @@
         "shared/api.js",
         "shared/settings.js",
         "shared/keywords.js",
+        "shared/art.js",
         "content/sites.js",
         "content/curtain.js",
         "content/content-css.js",
@@ -50,7 +51,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/fonts/Unbounded-latin.woff2", "assets/fonts/JetBrainsMono-latin.woff2"],
+      "resources": ["assets/fonts/Yellowtail-latin.woff2", "assets/fonts/Jost-latin.woff2"],
       "matches": ["<all_urls>"]
     }
   ],

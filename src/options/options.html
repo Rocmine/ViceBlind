@@ -11,6 +11,7 @@
   <script src="../shared/api.js"></script>
   <script src="../shared/settings.js"></script>
   <script src="../shared/keywords.js"></script>
+  <script src="../shared/art.js"></script>
   <script src="../ui/motion.js"></script>
 </head>
 <body>
@@ -19,7 +20,7 @@
   <header class="site-head" id="head">
     <a class="logo" href="#top" aria-label="Vice Blind">
       <img src="../assets/icons/icon-48.png" width="28" height="28" alt="">
-      <span class="logotype display">Vice Blind</span>
+      <span class="wordmark">Vice Blind</span>
     </a>
     <nav id="nav" aria-label="Settings sections">
       <a href="#protection">Protection</a>
@@ -36,13 +37,15 @@
   <main id="main">
     <div id="top" class="grid">
       <section class="page-head">
-        <p class="crumb reveal d-0">~/vice-blind / settings</p>
-        <div class="title-block"><h1 class="display" id="title">Settings</h1></div>
-        <p class="lede reveal d-5">Every change saves the moment you make it. Nothing leaves your browser.</p>
+        <div class="head-sun" id="sun"></div>
+        <h1 class="sign" id="title">Settings</h1>
+        <p class="lede">Every change saves the moment you make it. Nothing leaves your browser.</p>
       </section>
 
-      <section class="sec reveal d-6" id="protection">
-        <h2 class="label"><span class="num">01</span> Protection</h2>
+      <hr class="fan">
+
+      <section class="sec" id="protection">
+        <h2 class="sec-title">Protection</h2>
         <div class="content">
           <div class="opt">
             <div class="opt-text"><h3>Level</h3><p class="muted">How much counts as GTA VI.</p></div>
@@ -83,8 +86,10 @@
         </div>
       </section>
 
+      <hr class="fan">
+
       <section class="sec" id="words">
-        <h2 class="label"><span class="num">02</span> Word lists</h2>
+        <h2 class="sec-title">Word lists</h2>
         <div class="content">
           <p class="muted intro">Click a word to switch it off. Core words stay on. Packs outside your level are dimmed.</p>
           <div id="packs"></div>
@@ -109,8 +114,10 @@
         </div>
       </section>
 
+      <hr class="fan">
+
       <section class="sec" id="sites">
-        <h2 class="label"><span class="num">03</span> Trusted sites</h2>
+        <h2 class="sec-title">Trusted sites</h2>
         <div class="content">
           <p class="muted intro">Vice Blind does nothing on these sites. Subdomains are included.</p>
           <form class="field" id="siteForm" autocomplete="off">
@@ -121,8 +128,10 @@
         </div>
       </section>
 
+      <hr class="fan">
+
       <section class="sec" id="release">
-        <h2 class="label"><span class="num">04</span> Release day</h2>
+        <h2 class="sec-title">Release day</h2>
         <div class="content">
           <p class="muted intro">Set the day GTA VI is playable on your PC. When it arrives, Vice Blind offers to switch itself off.</p>
           <div class="field date">
@@ -133,8 +142,10 @@
         </div>
       </section>
 
+      <hr class="fan">
+
       <section class="sec" id="data">
-        <h2 class="label"><span class="num">05</span> Your data</h2>
+        <h2 class="sec-title">Your data</h2>
         <div class="content">
           <p class="muted intro">Move your settings between browsers, or start over.</p>
           <div class="chips actions">
@@ -146,8 +157,10 @@
         </div>
       </section>
 
+      <hr class="fan">
+
       <section class="sec" id="privacy">
-        <h2 class="label"><span class="num">06</span> Privacy</h2>
+        <h2 class="sec-title">Privacy</h2>
         <div class="content">
           <ul class="facts">
             <li><b>No network.</b> Vice Blind makes no requests. Everything runs on the page in your browser.</li>
@@ -162,9 +175,8 @@
   </main>
 
   <footer class="site-foot">
-    <div class="ticker" id="ticker" aria-hidden="true"></div>
     <div class="foot-row">
-      <span class="dim">vice blind / stay blind</span>
+      <span class="dim">Vice Blind. Stay blind.</span>
       <button class="linkbtn" id="motion" type="button" aria-pressed="true">Motion: on</button>
     </div>
   </footer>

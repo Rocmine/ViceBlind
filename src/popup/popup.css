@@ -1,36 +1,37 @@
 html { min-width: 380px; }
 body { width: 380px; }
 
-.bar { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--rule); }
-.logo { display: inline-flex; align-items: center; gap: 0.6rem; }
-.logo img { display: block; }
-.logotype { font-size: 0.74rem; letter-spacing: -0.02em; line-height: 1; }
+.bar { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.1rem 0.3rem; }
+.logo { display: inline-flex; align-items: center; gap: 0.55rem; }
+.logo img { display: block; border-radius: 6px; }
 
-.hero { padding: 1.2rem 1.1rem 1.3rem; }
-.role { min-height: 1.3em; margin-bottom: 0.85rem; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--muted); }
-#title { font-size: 3.1rem; line-height: 0.9; }
+/* Hero: the sign on a low sun, palms along the bottom. */
+.hero { position: relative; height: 10.5rem; overflow: hidden; }
+.hero-sun { position: absolute; right: -2.2rem; top: 0.6rem; width: 9.5rem; height: 9.5rem; }
+.hero .sign { position: absolute; left: 1.1rem; bottom: 2.1rem; font-size: 3.9rem; z-index: 1; }
+.hero-palms { position: absolute; left: 0; right: 0; bottom: 0; height: 5.5rem; }
 
-.row { padding-inline: 1.1rem; grid-template-columns: 4.6rem minmax(0, 1fr); }
+.row { padding-inline: 1.1rem; grid-template-columns: 4.8rem minmax(0, 1fr); }
 .split { display: flex; align-items: center; justify-content: space-between; gap: 0.9rem; }
-.host { font-weight: 700; font-size: 0.8rem; word-break: break-all; margin-bottom: 0.25rem; }
+.host { font-weight: 600; word-break: break-all; margin-bottom: 0.2rem; }
 .host.dim { font-weight: 400; }
-.hint { margin-top: 0.5rem; font-size: 0.68rem; line-height: 1.6; color: var(--dim); }
-.seg { display: grid; width: 100%; }
-.seg button { padding: 0.7rem 0.3rem; letter-spacing: 0.06em; min-width: 0; }
+.hint { margin-top: 0.5rem; font-size: 0.84rem; line-height: 1.5; color: var(--dim); }
+.seg { display: flex; width: 100%; }
+.seg button { flex: 1; padding-inline: 0.4rem; min-width: 0; }
 #pause .chips { gap: 0.4rem; }
-#pause button.chip { min-height: 2rem; padding-inline: 0.8rem; }
-.num { color: var(--accent); font-weight: 700; }
+#pause button.chip { min-height: 2rem; padding-inline: 0.9rem; }
 
-.notice { margin: 0 1.1rem 0.9rem; padding: 0.8rem 0.9rem; border: 1px solid rgba(59, 109, 255, 0.5); border-left-width: 3px; background: rgba(59, 109, 255, 0.07); font-size: 0.72rem; line-height: 1.7; }
-.notice p { color: var(--body); margin-bottom: 0.65rem; }
+.notice { margin: 0.7rem 1.1rem 0.2rem; padding: 0.8rem 0.95rem; border: 1px solid var(--teal); border-radius: 16px; background: rgba(45, 226, 208, 0.07); font-size: 0.9rem; }
+.notice p { color: var(--sand); margin-bottom: 0.65rem; }
 .notice .chips { gap: 0.5rem; }
 
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); margin-top: 0.15rem; }
-.stat { padding: 0.8rem 1.1rem 0.9rem; border-left: 1px solid var(--rule); min-width: 0; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); margin-top: 0.15rem; }
+.stat { padding: 0.8rem 1.1rem 0.9rem; border-left: 1px solid var(--line); min-width: 0; }
 .stat:first-child { border-left: 0; }
-.stat b { display: block; font: 700 1.15rem/1.2 var(--mono); color: var(--accent); }
-.stat .label { font-size: 0.62rem; letter-spacing: 0.12em; }
+.stat b { display: block; font: 600 1.45rem/1.2 var(--sans); color: var(--pink-soft); font-variant-numeric: tabular-nums; text-shadow: 0 0 14px rgba(255, 62, 150, 0.5); }
+.stat .label { font-size: 0.8rem; color: var(--dim); }
 
-.foot { display: flex; align-items: center; justify-content: space-between; padding: 0.15rem 1.1rem; border-top: 1px solid var(--rule); }
+.foot { display: flex; align-items: center; justify-content: space-between; padding: 0.1rem 1.1rem; border-top: 1px solid var(--line); }
+
 .is-off .row:not(:first-of-type) { opacity: 0.45; }
 .is-off .row:not(:first-of-type) * { pointer-events: none; }
