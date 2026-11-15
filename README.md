@@ -6,7 +6,7 @@ Chrome, Edge, Brave, Opera, Vivaldi and Firefox. No accounts, no analytics, no n
 ## What it does
 
 - **Hides cards, not pages.** A matching post, video tile, search result or headline is blurred under a label. Click once to arm, click again to reveal, so a stray click never spoils anything. Also: cover, remove, one-click, or locked.
-- **Page curtain.** When a whole page is about GTA VI (title, heading or address), a full-screen "NOT YET." covers it and pauses its video. Go back, show this page, or trust the site.
+- **Page curtain.** When a whole page is about GTA VI (title, heading or address), a full-screen neon "Not yet." sign covers it and pauses its video. Go back, show this page, or trust the site.
 - **Three levels.** Light (GTA 6 / GTA VI), Balanced (adds characters and places, default), Strict (adds Rockstar, Take-Two, GTA Online).
 - **Your own words**, with `*` wildcards, a live "test the filter" box, per-word switches, trusted sites, pause (15 min / 1 h / today), release-day reminder, export and import.
 - Works inside shadow DOM (YouTube, Reddit and other web-component sites) and on pages that load content as you scroll.
