@@ -1,5 +1,7 @@
 # Vice Blind: GTA VI spoiler blocker
 
+Website: <https://rocmine.github.io/ViceBlind/> (source in `docs/`) · [Security policy](SECURITY.md) · [MIT licence](LICENSE)
+
 Hides GTA VI posts, videos, thumbnails, headlines and whole pages on every site, so PC players can wait for the PC version without spoilers.
 Chrome, Edge, Brave, Opera, Vivaldi and Firefox. No accounts, no analytics, no network requests.
 
@@ -44,14 +46,17 @@ Safari is not supported (it needs a Mac with Xcode to convert the extension).
 
 ```
 npm install                 # playwright + web-ext (dev only)
-npm test                    # matcher unit tests (76)
+npm test                    # matcher + security unit tests (85)
 npm run build
 npx web-ext lint --source-dir dist/firefox
 VB_CHANNEL=msedge npm run e2e              # loads dist/chrome in a temporary profile, 75 checks + screenshots in test-results/
 VB_CHANNEL=msedge node tests/e2e-sites.mjs # live YouTube / Wikipedia smoke test (needs internet)
+python tools/build_site.py && VB_CHANNEL=msedge node tests/site.e2e.mjs   # website: assets, CSP, demo, phone width (19 checks)
 ```
 
 `VB_CHANNEL` picks the browser Playwright drives: `chromium` (default, Playwright's own build), `msedge` or `chrome`. Branded Chrome 137+ ignores `--load-extension`, so use Edge or Playwright's Chromium for automation. On machines where Windows Application Control blocks Playwright's Chromium, use Edge.
+
+The website in `docs/` is served by GitHub Pages (Settings -> Pages -> `main` / `docs`). `tools/build_site.py` copies the shared design files from `src/` into it; `tools/make_og.py` redraws the social card. GitHub Pages cannot send HTTP headers, so the site sets its Content-Security-Policy in a `<meta>` tag (`frame-ancestors` cannot be set that way).
 
 Layout: `src/` is the single source. `tools/build.py` derives both manifests and generates `content/content-css.js` (the stylesheet as a string, injected into shadow roots).
 

@@ -66,6 +66,7 @@ html[data-motion='full'] .sun .slit { animation: slit 0.9s var(--ease) both; ani
 .sun { display: block; }
 .sun svg, .palms svg { display: block; width: 100%; height: 100%; }
 .sun .slit { transform-box: fill-box; transform-origin: center; }
+.sun .slit:nth-child(2) { --n: 0; } .sun .slit:nth-child(3) { --n: 1; } .sun .slit:nth-child(4) { --n: 2; } .sun .slit:nth-child(5) { --n: 3; } .sun .slit:nth-child(6) { --n: 4; } .sun .slit:nth-child(7) { --n: 5; }
 .palms { pointer-events: none; }
 
 /* ---------- Deco fan divider ---------- */

@@ -1,0 +1,171 @@
+/* Vice Blind UI: neon night on Ocean Drive.
+ * Midnight plum, flamingo neon, Miami teal, sunset coral. Yellowtail script for the sign, Jost for everything else. */
+
+@font-face { font-family: 'Yellowtail'; src: url('../assets/fonts/Yellowtail-latin.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Jost'; src: url('../assets/fonts/Jost-latin.woff2') format('woff2'); font-weight: 400 700; font-display: swap; }
+
+:root {
+  --night: #1b0a33;
+  --night-deep: #12062a;
+  --night-raised: #2a1048;
+  --pink: #ff3e96;
+  --pink-soft: #ff8fbf;
+  --teal: #2de2d0;
+  --coral: #ff8a5b;
+  --sand: #ffe9d6;
+  --muted: rgba(255, 233, 214, 0.74);
+  --dim: rgba(255, 233, 214, 0.6);
+  --line: rgba(255, 233, 214, 0.16);
+  --pad: clamp(1.1rem, 4vw, 2.75rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sans: 'Jost', 'Futura', 'Century Gothic', 'Segoe UI', system-ui, sans-serif;
+  --script: 'Yellowtail', 'Brush Script MT', 'Segoe Script', cursive;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background-color: var(--night);
+  background-image:
+    radial-gradient(ellipse 90% 38% at 50% 100%, rgba(255, 62, 150, 0.26), transparent 72%),
+    linear-gradient(180deg, var(--night-deep) 0%, var(--night) 48%, #2c0f48 100%);
+  background-attachment: fixed;
+  color: var(--sand);
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--sans);
+  font-size: 16px;
+}
+
+body { margin: 0; position: relative; overflow-x: clip; font-size: 0.94rem; line-height: 1.65; }
+
+::selection { background: var(--pink); color: var(--night); }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+a { color: var(--teal); }
+p { margin: 0; text-wrap: pretty; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 600; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 0; z-index: 10; background: var(--teal); color: var(--night); padding: 0.6rem 1rem; border-radius: 0 0 12px 0; }
+.skip:focus { left: 0; }
+.muted { color: var(--muted); }
+.dim { color: var(--dim); }
+.num { color: var(--teal); font-weight: 600; font-variant-numeric: tabular-nums; }
+.mono-num { font-variant-numeric: tabular-nums; }
+
+/* ---------- the sign: neon script ---------- */
+.sign {
+  font-family: var(--script); font-weight: 400; line-height: 1; margin: 0;
+  color: #ffe0ef;
+  text-shadow: 0 0 0.03em #fff, 0 0 0.1em var(--pink), 0 0 0.28em var(--pink), 0 0 0.6em rgba(255, 62, 150, 0.75), 0 0 1.1em rgba(255, 62, 150, 0.45);
+}
+.sign.teal { color: #d7fff9; text-shadow: 0 0 0.03em #fff, 0 0 0.1em var(--teal), 0 0 0.28em var(--teal), 0 0 0.6em rgba(45, 226, 208, 0.7), 0 0 1.1em rgba(45, 226, 208, 0.4); }
+.wordmark { font-family: var(--script); font-size: 1.75rem; line-height: 1; color: #ffe0ef; text-shadow: 0 0 0.08em var(--pink), 0 0 0.35em rgba(255, 62, 150, 0.8); white-space: nowrap; }
+/* One orchestrated moment: the sign flickers on, twice, then holds. */
+html[data-motion='full'] .sign { animation: neon-on 1.4s linear 0.5s both; }
+html[data-motion='full'] .sun .slit { animation: slit 0.9s var(--ease) both; animation-delay: calc(0.1s + var(--n) * 90ms); }
+.sun { display: block; }
+.sun svg, .palms svg { display: block; width: 100%; height: 100%; }
+.sun .slit { transform-box: fill-box; transform-origin: center; }
+.sun .slit:nth-child(2) { --n: 0; } .sun .slit:nth-child(3) { --n: 1; } .sun .slit:nth-child(4) { --n: 2; } .sun .slit:nth-child(5) { --n: 3; } .sun .slit:nth-child(6) { --n: 4; } .sun .slit:nth-child(7) { --n: 5; }
+.palms { pointer-events: none; }
+
+/* ---------- Deco fan divider ---------- */
+.fan {
+  height: 22px; border: 0; margin: 0;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 16'><g fill='none' stroke-linecap='round' stroke-width='1.3'><path stroke='%23ff8fbf' d='M22 15V3M22 15L12 5M22 15L32 5M22 15L5 10M22 15L39 10'/><path stroke='%232de2d0' d='M9 15a13 13 0 0 1 26 0'/></g></svg>") center / 44px 16px no-repeat,
+    linear-gradient(90deg, var(--line) 0 calc(50% - 32px), transparent calc(50% - 32px) calc(50% + 32px), var(--line) calc(50% + 32px)) center / 100% 1px no-repeat;
+}
+
+/* ---------- buttons (neon tubes) ---------- */
+.btn {
+  appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font: 600 0.94rem/1 var(--sans); text-decoration: none; cursor: pointer;
+  color: var(--night); background: var(--pink); border: 1.5px solid var(--pink); border-radius: 999px; padding: 0 1.35rem; min-height: 2.6rem;
+  transition: box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.btn:hover { box-shadow: 0 0 0 1px var(--pink-soft), 0 0 22px rgba(255, 62, 150, 0.6); }
+.btn.ghost { background: transparent; color: var(--teal); border-color: var(--teal); }
+.btn.ghost:hover { background: rgba(45, 226, 208, 0.12); box-shadow: 0 0 18px rgba(45, 226, 208, 0.4); }
+.btn.danger { background: transparent; color: var(--coral); border-color: var(--coral); }
+.btn.danger:hover { background: rgba(255, 138, 91, 0.14); box-shadow: 0 0 18px rgba(255, 138, 91, 0.4); }
+.btn.small { min-height: 2.1rem; font-size: 0.86rem; padding: 0 1rem; }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+@media (pointer: coarse) { .btn, .seg button, .chip { min-height: 2.75rem; } }
+
+/* ---------- segmented control: a row of tubes ---------- */
+.seg { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: rgba(13, 4, 32, 0.55); max-width: 100%; }
+.seg button {
+  appearance: none; background: none; border: 0; border-radius: 999px; color: var(--muted); cursor: pointer;
+  font: 600 0.88rem/1 var(--sans); padding: 0.62rem 1.05rem; min-height: 2.2rem;
+  transition: color 0.2s var(--ease), background 0.2s var(--ease), box-shadow 0.25s var(--ease);
+}
+.seg button:hover { color: var(--sand); }
+.seg button[aria-checked='true'] { color: var(--night); background: var(--pink); box-shadow: 0 0 16px rgba(255, 62, 150, 0.55); }
+.seg button:focus-visible { outline-offset: 1px; }
+
+/* ---------- switch ---------- */
+.switch {
+  appearance: none; position: relative; width: 3rem; height: 1.65rem; padding: 0; flex: none; cursor: pointer; border-radius: 999px;
+  background: rgba(13, 4, 32, 0.6); border: 1.5px solid var(--line); transition: border-color 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: calc(1.65rem - 9px); height: calc(1.65rem - 9px); border-radius: 50%; background: var(--dim); transition: translate 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.switch[aria-checked='true'] { border-color: var(--teal); background: rgba(45, 226, 208, 0.14); box-shadow: 0 0 14px rgba(45, 226, 208, 0.35); }
+.switch[aria-checked='true']::after { translate: 1.35rem 0; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+@media (pointer: coarse) { .switch { height: 2rem; width: 3.5rem; } .switch::after { width: calc(2rem - 9px); height: calc(2rem - 9px); } .switch[aria-checked='true']::after { translate: 1.5rem 0; } }
+
+/* ---------- chips ---------- */
+.chip { display: inline-flex; align-items: center; gap: 0.45rem; font: 500 0.84rem/1.2 var(--sans); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; background: transparent; padding: 0.3rem 0.8rem; min-height: 1.85rem; }
+button.chip { cursor: pointer; transition: border-color 0.2s var(--ease), color 0.2s var(--ease), background 0.2s var(--ease), box-shadow 0.25s var(--ease); }
+button.chip:hover { border-color: var(--teal); color: var(--sand); }
+button.chip[aria-pressed='true'] { border-color: var(--teal); color: #d7fff9; background: rgba(45, 226, 208, 0.1); }
+button.chip[aria-pressed='false'] { text-decoration: line-through; color: var(--dim); }
+.chip .x { appearance: none; background: none; border: 0; color: var(--dim); cursor: pointer; padding: 0 0.1rem; font: inherit; line-height: 1; }
+.chip .x:hover { color: var(--pink-soft); }
+.chip.locked { color: var(--dim); }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* ---------- status badge ---------- */
+.badge { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.86rem; font-weight: 500; color: var(--muted); }
+.badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+.badge.off i { background: var(--dim); box-shadow: none; }
+
+/* ---------- inputs ---------- */
+.field { display: flex; gap: 0.6rem; align-items: stretch; }
+.field input, .field textarea {
+  flex: 1; min-width: 0; color: var(--sand); font: 400 0.94rem/1.5 var(--sans); color-scheme: dark;
+  background: rgba(13, 4, 32, 0.55); border: 1px solid var(--line); border-radius: 999px; padding: 0.6rem 1.1rem;
+  transition: border-color 0.2s var(--ease), box-shadow 0.25s var(--ease);
+}
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 14px rgba(45, 226, 208, 0.3); }
+.field input::placeholder, .field textarea::placeholder { color: var(--dim); }
+.field textarea { resize: vertical; border-radius: 18px; padding: 0.8rem 1rem; min-height: 5.5rem; }
+
+/* ---------- label | content rows ---------- */
+.row { display: grid; grid-template-columns: minmax(4.6rem, 6.2rem) minmax(0, 1fr); gap: 0.9rem; border-top: 1px solid var(--line); padding-block: 0.9rem; align-items: start; }
+.row > .label { padding-top: 0.2rem; font-weight: 600; font-size: 0.9rem; color: var(--muted); }
+
+/* ---------- text link-button ---------- */
+.linkbtn { appearance: none; background: none; border: 0; padding: 0.65rem 0; cursor: pointer; font: 600 0.88rem/1 var(--sans); color: var(--muted); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 5px; text-decoration-thickness: 1.5px; transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease); }
+.linkbtn:hover { color: var(--teal); text-decoration-color: var(--teal); }
+
+/* ---------- toast ---------- */
+.toast { position: fixed; left: 50%; bottom: 1.25rem; translate: -50% 0; z-index: 20; pointer-events: none; font-size: 0.88rem; font-weight: 500; color: var(--sand); background: var(--night-deep); border: 1px solid var(--teal); border-radius: 999px; padding: 0.5rem 1.1rem; box-shadow: 0 0 18px rgba(45, 226, 208, 0.3); opacity: 0; transform: translateY(8px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
+.toast.show { opacity: 1; transform: none; }
+
+@keyframes slit { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+/* Two flickers, 0.5 s apart: well under the 3 flashes per second limit. */
+@keyframes neon-on { 0%, 27% { opacity: 0.16; } 28%, 42% { opacity: 1; } 43%, 63% { opacity: 0.2; } 64%, 100% { opacity: 1; } }
+
+/* ---------- accessibility modes ---------- */
+@media (prefers-contrast: more) { :root { --muted: rgba(255, 233, 214, 0.9); --dim: rgba(255, 233, 214, 0.78); --line: rgba(255, 233, 214, 0.4); } }
+@media (forced-colors: active) {
+  .btn, .seg, .chip, .switch, .field input, .field textarea { border-color: ButtonText; }
+  .switch[aria-checked='true'] { background: Highlight; }
+  .seg button[aria-checked='true'] { outline: 2px solid Highlight; }
+  .sign, .wordmark { text-shadow: none; color: CanvasText; }
+}
+
+/* Illustrations bleed off the edge on purpose; never let them create a horizontal scrollbar. */
+main { overflow-x: clip; }
+.sign { padding-bottom: 0.12em; }

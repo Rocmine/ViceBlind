@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- GitHub Pages cannot send HTTP headers, so the policy is set here. No third-party requests, no inline code. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Vice Blind: GTA VI spoiler blocker for PC players</title>
+  <meta name="description" content="Vice Blind hides GTA VI posts, videos, thumbnails and headlines on every site, so you can wait for the PC version without a single spoiler. Free, open source, no tracking.">
+  <meta name="theme-color" content="#1b0a33">
+  <link rel="canonical" href="https://rocmine.github.io/ViceBlind/">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/icons/icon-48.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-128.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vice Blind: stay blind until GTA VI is on PC">
+  <meta property="og:description" content="Hides GTA VI spoilers on every site. Free, open source, no tracking. Chrome, Edge, Brave, Opera and Firefox.">
+  <meta property="og:url" content="https://rocmine.github.io/ViceBlind/">
+  <meta property="og:image" content="https://rocmine.github.io/ViceBlind/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/content.css">
+  <link rel="stylesheet" href="assets/demo.css">
+  <link rel="stylesheet" href="site.css">
+  <script src="assets/art.js"></script>
+  <script src="assets/motion.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="top">
+    <a class="brand" href="#top" aria-label="Vice Blind, top of page">
+      <img src="assets/icons/icon-48.png" width="30" height="30" alt="">
+      <span class="wordmark">Vice Blind</span>
+    </a>
+    <nav aria-label="Page sections">
+      <a href="#try">Try it</a>
+      <a href="#install">Install</a>
+      <a href="#privacy">Privacy</a>
+      <a href="https://github.com/Rocmine/ViceBlind" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <h1 class="sign">Stay blind.</h1>
+          <p class="lede">Vice Blind hides GTA VI posts, videos, thumbnails and headlines on every site, so you can wait for the PC version without a single spoiler.</p>
+          <div class="cta">
+            <a class="btn" href="https://github.com/Rocmine/ViceBlind/releases/latest" rel="noopener noreferrer">Download</a>
+            <a class="btn ghost" href="https://github.com/Rocmine/ViceBlind" rel="noopener noreferrer">View the source</a>
+          </div>
+          <p class="fine dim">Free and open source. Works in Chrome, Edge, Brave, Opera and Firefox.</p>
+        </div>
+        <div class="hero-sun" id="sun"></div>
+      </div>
+      <div class="hero-palms" id="palms" aria-hidden="true"></div>
+    </section>
+
+    <hr class="fan">
+
+    <section class="wrap block" id="try" aria-labelledby="try-h">
+      <div class="block-text">
+        <h2 id="try-h">Try it right here</h2>
+        <p class="muted">Two of these headlines are about GTA VI, so they are hidden. Click one twice to show it: the first click arms it, the second reveals it, so a stray click never spoils anything. The middle one is fine, so it stays.</p>
+        <div class="seg" id="style" aria-label="Style">
+          <button type="button" data-value="blur">Blur</button>
+          <button type="button" data-value="cover">Cover</button>
+          <button type="button" data-value="remove">Remove</button>
+        </div>
+        <div class="feed" id="feed"></div>
+      </div>
+      <figure class="shot">
+        <img src="assets/img/curtain.webp" width="1280" height="800" alt="The Vice Blind page curtain: a neon sign reading Not yet, over a sunset with palm trees, with Go back, Show this page and Trust this site buttons." loading="lazy">
+        <figcaption class="dim">When a whole page is about GTA VI, a full-screen sign covers it and pauses its video.</figcaption>
+      </figure>
+    </section>
+
+    <hr class="fan">
+
+    <section class="wrap" aria-labelledby="does-h">
+      <h2 id="does-h" class="center-h">What it does</h2>
+      <ul class="does">
+        <li><h3>Hides the post, not the page</h3><p class="muted">A matching video tile, search result or headline is blurred, covered or removed. Everything around it stays usable.</p></li>
+        <li><h3>Covers spoiler pages</h3><p class="muted">If a page's title, heading or address is about GTA VI, you get the "Not yet." sign. Go back, show the page once, or trust the site.</p></li>
+        <li><h3>Three levels</h3><p class="muted">Light catches GTA 6 and GTA VI. Balanced adds the main characters and places. Strict adds Rockstar, Take-Two and GTA Online.</p></li>
+        <li><h3>Your own words</h3><p class="muted">Add names, games or streamers. Test any text and see what would be hidden. Set your PC date and it offers to switch itself off that day.</p></li>
+      </ul>
+    </section>
+
+    <hr class="fan">
+
+    <section class="wrap" id="install" aria-labelledby="install-h">
+      <h2 id="install-h" class="center-h">Install</h2>
+      <p class="muted center-p">Vice Blind is not in the browser stores yet. For now you download it from GitHub and load it yourself, which takes a minute.</p>
+      <div class="install">
+        <div>
+          <h3>Chrome, Edge, Brave and Opera</h3>
+          <ol>
+            <li>Download <code>vice-blind-chrome-1.0.0.zip</code> from the <a href="https://github.com/Rocmine/ViceBlind/releases/latest" rel="noopener noreferrer">latest release</a> and unzip it.</li>
+            <li>Open <code>chrome://extensions</code> (<code>edge://extensions</code> in Edge, <code>opera://extensions</code> in Opera) and turn on Developer mode.</li>
+            <li>Choose Load unpacked and pick the unzipped folder.</li>
+            <li>Pin Vice Blind from the puzzle icon. The number on it counts what was hidden on the page.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Firefox 140 and newer</h3>
+          <ol>
+            <li>Download <code>vice-blind-firefox-1.0.0.zip</code> from the release and unzip it.</li>
+            <li>Open <code>about:debugging#/runtime/this-firefox</code>.</li>
+            <li>Choose Load Temporary Add-on and pick <code>manifest.json</code> from the unzipped folder.</li>
+          </ol>
+          <p class="hint dim">Firefox removes temporary add-ons when it restarts, so you load it again after a restart.</p>
+        </div>
+      </div>
+      <p class="muted center-p">Each release lists SHA-256 checksums, so you can check your download. Safari is not supported.</p>
+    </section>
+
+    <hr class="fan">
+
+    <section class="wrap block" id="privacy" aria-labelledby="priv-h">
+      <div class="block-text">
+        <h2 id="priv-h">Privacy and permissions</h2>
+        <ul class="facts">
+          <li><b>No network.</b> Vice Blind makes no requests. Everything runs on the page, in your browser.</li>
+          <li><b>No tracking.</b> No analytics, no accounts, no ads, no remote code.</li>
+          <li><b>Why it asks for every site.</b> It has to read pages on any site to find GTA VI content. It reads text only to match words, and nothing leaves your device.</li>
+          <li><b>Your settings</b> stay in your browser's own extension storage. If you use browser sync, your browser syncs them.</li>
+          <li><b>Open source</b> under the MIT licence. Read it, build it, change it.</li>
+        </ul>
+      </div>
+      <figure class="shot narrow">
+        <img src="assets/img/popup.webp" width="380" height="760" alt="The Vice Blind popup showing the shield switch, this page's hidden count, level, style and pause controls." loading="lazy">
+      </figure>
+    </section>
+  </main>
+
+  <footer>
+    <div class="palm-strip" id="palms2" aria-hidden="true"></div>
+    <div class="foot-row">
+      <span class="dim">Vice Blind is not affiliated with Rockstar Games or Take-Two Interactive. Grand Theft Auto is their trademark.</span>
+      <a class="linkbtn" href="https://github.com/Rocmine/ViceBlind" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="assets/demo.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

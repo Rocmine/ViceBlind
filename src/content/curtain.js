@@ -30,6 +30,7 @@
     }
     .sun { position: absolute; z-index: 0; right: max(-9vmin, -80px); top: 50%; width: min(66vmin, 620px); height: min(66vmin, 620px); translate: 0 -54%; }
     .sun svg, .palms svg { display: block; width: 100%; height: 100%; }
+    .sun .slit:nth-child(2) { --n: 0; } .sun .slit:nth-child(3) { --n: 1; } .sun .slit:nth-child(4) { --n: 2; } .sun .slit:nth-child(5) { --n: 3; } .sun .slit:nth-child(6) { --n: 4; } .sun .slit:nth-child(7) { --n: 5; }
     .sun .slit { transform-box: fill-box; transform-origin: center; animation: slit .9s cubic-bezier(.22,1,.36,1) both; animation-delay: calc(.1s + var(--n) * 90ms); }
     .palms { position: absolute; z-index: 0; left: 0; right: 0; bottom: 0; height: min(max(100px, 24.2vw), 40vh); pointer-events: none; }
     .page { position: relative; z-index: 1; min-height: 100%; display: grid; grid-template-rows: auto 1fr; padding: clamp(14px, 3vw, 36px) clamp(20px, 5vw, 64px) clamp(90px, 24vh, 230px); }

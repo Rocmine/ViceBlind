@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="sun" x1="0" y1="176" x2="0" y2="836" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd166"/>
+      <stop offset=".48" stop-color="#ff8a5b"/>
+      <stop offset="1" stop-color="#ff3e96"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".45" stop-color="#1b0a33"/>
+      <stop offset="1" stop-color="#4a1256"/>
+    </linearGradient>
+    <mask id="slats">
+      <rect width="1024" height="1024" fill="#fff"/>
+      <rect x="0" y="528" width="1024" height="40" fill="#000"/>
+      <rect x="0" y="616" width="1024" height="56" fill="#000"/>
+      <rect x="0" y="712" width="1024" height="72" fill="#000"/>
+      <rect x="0" y="816" width="1024" height="40" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="1024" height="1024" rx="230" fill="url(#tile)"/>
+  <circle cx="512" cy="506" r="330" fill="url(#sun)" mask="url(#slats)"/>
+</svg>
