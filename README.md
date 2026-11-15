@@ -2,7 +2,7 @@
 
 # Vice Blind: GTA VI spoiler blocker
 
-Website: <https://rocmine.github.io/ViceBlind/> (source in `docs/`) · [Security policy](SECURITY.md) · [MIT licence](LICENSE)
+Website: <https://rocmine.github.io/ViceBlind/> (source in `docs/`) · [Sponsor](https://github.com/sponsors/Rocmine) · [Security policy](SECURITY.md) · [MIT licence](LICENSE)
 
 Hides GTA VI posts, videos, thumbnails, headlines and whole pages on every site, so PC players can wait for the PC version without spoilers.
 Chrome, Edge, Brave, Opera, Vivaldi and Firefox. No accounts, no analytics, no network requests.
@@ -24,6 +24,10 @@ I made Vice Blind for PC players who don't have a console. GTA VI lands on conso
 Thank you to the whole GTA community, and to every PC player who is waiting patiently. The love you put into this series is why this exists. I hope we get GTA VI on PC sooner rather than later. Until then, stay blind.
 
 Find me on Twitch: [twitch.tv/rocmine](https://www.twitch.tv/rocmine)
+
+## Support the project
+
+Vice Blind is free and will stay free. If it saved you from a spoiler and you'd like to help me keep building it, you can **[sponsor me on GitHub](https://github.com/sponsors/Rocmine)**. It is never expected, and every bit means a lot. Starring the project and telling another PC player helps just as much.
 
 ## What it does
 

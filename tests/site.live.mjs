@@ -35,11 +35,14 @@ try {
   check('live demo reveals on two clicks', (await cards.nth(0).getAttribute('data-vb')) === 'shown');
   const links = await page.evaluate(() => [...document.querySelectorAll('a[href^="http"]')].map((a) => a.href));
   check('Twitch link points at rocmine', links.includes('https://www.twitch.tv/rocmine'));
+  check('Sponsor button points at GitHub Sponsors', links.includes('https://github.com/sponsors/Rocmine'));
   check('Download points at the latest release', links.includes('https://github.com/Rocmine/ViceBlind/releases/latest'));
   await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({ path: path.join(OUT, 'site-live.png') });
   const og = await fetch(new URL('assets/og.png', URL_));
   check('social card is served', og.status === 200 && (og.headers.get('content-type') || '').includes('image/png'));
+  const sp = await fetch('https://github.com/sponsors/Rocmine', { redirect: 'manual' });
+  check('sponsors page is live (HTTP 200)', sp.status === 200, String(sp.status));
   const rel = await fetch('https://github.com/Rocmine/ViceBlind/releases/latest', { redirect: 'manual' });
   check('release page exists', [200, 302].includes(rel.status));
 } catch (e) { bad.push('crashed ' + e.message); console.log(e); }

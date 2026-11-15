@@ -63,6 +63,7 @@ try {
   }));
   check('sun and palms are drawn', (await page.locator('#sun svg').count()) === 1 && (await page.locator('#palms svg').count()) === 1);
   check('title, description, canonical and og:image set', await page.evaluate(() => !!document.title && !!document.querySelector('meta[name=description]') && !!document.querySelector('link[rel=canonical]') && !!document.querySelector('meta[property="og:image"]')));
+  check('sponsor section links to GitHub Sponsors safely', await page.evaluate(() => { const a = document.querySelector('#support a[href="https://github.com/sponsors/Rocmine"]'); return !!a && /noopener/.test(a.rel) && /noreferrer/.test(a.rel); }));
   check('og image file exists in docs', (await fs.stat(path.join(DOCS, 'assets', 'og.png'))).size > 1000);
 
   console.log('\nLive demo');

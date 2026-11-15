@@ -75,3 +75,10 @@ code { font: 600 0.88em/1 var(--sans); color: var(--pink-soft); background: rgba
 .callout { margin: 0 0 1rem; padding: 0.8rem 1rem; border: 1px solid var(--coral); border-radius: 16px; background: rgba(255, 138, 91, 0.08); color: var(--sand); font-size: 0.94rem; line-height: 1.6; }
 .callout b { color: var(--coral); }
 .install h4 { font-size: 0.98rem; margin: 1rem 0 0.4rem; color: var(--sand); }
+
+.support { max-width: 42rem; padding-block: clamp(1.5rem, 5vh, 3rem); text-align: center; }
+.support .sign { font-size: clamp(3.6rem, 10vw, 6rem); margin-bottom: 0.4rem; padding-right: 0.1em; }
+.support h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 0.9rem; }
+.support p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; }
+.support .cta { justify-content: center; margin-top: 1.4rem; }
+.support .fine { margin-top: 1rem; font-size: 0.88rem; }
