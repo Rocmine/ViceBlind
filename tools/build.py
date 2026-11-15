@@ -132,7 +132,8 @@ def main() -> int:
         print(f"{label}: {out.name} ({out.stat().st_size / 1024:.0f} KB)")
         sums.append(f"{hashlib.sha256(out.read_bytes()).hexdigest()}  {out.name}")
     # Checksums let anyone verify a downloaded zip against the release page.
-    (DIST / "SHA256SUMS.txt").write_text("\n".join(sums) + "\n", encoding="utf-8")
+    # Raw bytes with LF endings, so `sha256sum -c` works on Linux and macOS too (text mode would write CRLF on Windows).
+    (DIST / "SHA256SUMS.txt").write_bytes(("\n".join(sums) + "\n").encode("utf-8"))
     if problems:
         print("\n".join(problems), file=sys.stderr)
         return 1
