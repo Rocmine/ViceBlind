@@ -3,6 +3,7 @@
 Usage: python tools/build.py
 Writes dist/chrome/, dist/firefox/ and dist/vice-blind-{chrome,firefox}-<version>.zip
 """
+import hashlib
 import json
 import shutil
 import sys
@@ -118,6 +119,7 @@ def main() -> int:
     version = m["version"]
     DIST.mkdir(exist_ok=True)
     problems = []
+    sums = []
     for label, make in (("chrome", chrome_manifest), ("firefox", firefox_manifest)):
         dest = DIST / label
         copy_tree(dest)
@@ -128,6 +130,9 @@ def main() -> int:
         out = DIST / f"vice-blind-{label}-{version}.zip"
         zip_dir(dest, out)
         print(f"{label}: {out.name} ({out.stat().st_size / 1024:.0f} KB)")
+        sums.append(f"{hashlib.sha256(out.read_bytes()).hexdigest()}  {out.name}")
+    # Checksums let anyone verify a downloaded zip against the release page.
+    (DIST / "SHA256SUMS.txt").write_text("\n".join(sums) + "\n", encoding="utf-8")
     if problems:
         print("\n".join(problems), file=sys.stderr)
         return 1

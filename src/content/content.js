@@ -103,7 +103,7 @@
     const check = (el) => {
       for (const a of ['alt', 'title', 'aria-label']) {
         const v = el.getAttribute(a);
-        if (v && v.length > 3 && M.re.test(v)) { onHit(el, M.first(v)); count++; }
+        if (v && v.length > 3 && M.test(v)) { onHit(el, M.first(v)); count++; }
       }
       if (el.nodeName === 'A') {
         const h = el.getAttribute('href');
@@ -113,7 +113,7 @@
         if (s && s.length > 4 && s.length < 600 && !s.startsWith('data:') && M.coreRe.test(safeDecode(s.split('?')[0].split('/').pop()))) { onHit(el, { text: 'GTA VI image', term: { label: 'image', pack: 'core' } }); count++; }
       }
       const mixed = mixedText(el);
-      if (mixed && M.re.test(mixed)) { onHit(el, M.first(mixed)); count++; }
+      if (mixed && M.test(mixed)) { onHit(el, M.first(mixed)); count++; }
       const sr = shadowOf(el);
       if (sr && !observed.has(sr)) { watchRoot(sr); queue.push(sr); }
       else if (sr && into) queue.push(sr);
@@ -137,7 +137,7 @@
     while ((n = tw.nextNode())) {
       if (n.nodeType === 3) {
         const v = n.nodeValue;
-        if (v && v.length > 1 && M.re.test(v)) { onHit(n, M.first(v)); count++; }
+        if (v && v.length > 1 && M.test(v)) { onHit(n, M.first(v)); count++; }
       } else check(n);
       if (limit && count >= limit) return count;
     }
@@ -326,13 +326,13 @@
     const p = n.parentNode;
     if (!p || p.nodeType !== 1 || p.hasAttribute('data-vb')) return;
     const mixed = mixedText(p);
-    if (mixed && matcher.re.test(mixed)) handleHit(p, matcher.first(mixed));
+    if (mixed && matcher.test(mixed)) handleHit(p, matcher.first(mixed));
   }
 
   function scanNode(n) {
     if (n.nodeType === 3) {
       const v = n.nodeValue;
-      if (v && v.length > 1 && matcher.re.test(v)) handleHit(n, matcher.first(v));
+      if (v && v.length > 1 && matcher.test(v)) handleHit(n, matcher.first(v));
       else testParentMixed(n);
       return;
     }
@@ -349,14 +349,14 @@
     const M = matcher;
     for (const a of ['alt', 'title', 'aria-label']) {
       const v = el.getAttribute(a);
-      if (v && v.length > 3 && M.re.test(v)) handleHit(el, M.first(v));
+      if (v && v.length > 3 && M.test(v)) handleHit(el, M.first(v));
     }
     if (el.nodeName === 'A') {
       const h = el.getAttribute('href');
       if (h && h.length > 4 && h.length < 600 && M.coreRe.test(safeDecode(h))) handleHit(el, { text: 'GTA VI link', term: { label: 'link', pack: 'core' } });
     }
     const mixed = mixedText(el);
-    if (mixed && M.re.test(mixed)) handleHit(el, M.first(mixed));
+    if (mixed && M.test(mixed)) handleHit(el, M.first(mixed));
     if (adapter && el.matches && el.matches(adapter.union)) {
       const tc = el.textContent;
       if (tc && tc.length < 8000) { const h = M.first(tc); if (h) handleHit(el, h); }
@@ -567,7 +567,8 @@
     if (S.KEYS.some((k) => k in changes)) load();
   });
 
-  api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (sender && sender.id !== api.runtime.id) return false;   // only our own extension may ask
     if (msg && msg.type === 'vb-status') {
       sendResponse({
         host,

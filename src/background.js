@@ -76,7 +76,8 @@ if (typeof importScripts === 'function') importScripts('shared/api.js', 'shared/
   }
 
   api.runtime.onMessage.addListener((msg, sender) => {
-    if (!msg) return false;
+    // Only our own content scripts and pages may talk to us.
+    if (!msg || sender.id !== api.runtime.id) return false;
     const tabId = sender.tab && sender.tab.id;
     if (msg.type === 'vb-count' && tabId != null) {
       let frames = counts.get(tabId);

@@ -28,11 +28,19 @@
     "page": "options/options.html",
     "open_in_tab": true
   },
-  "permissions": ["storage", "contextMenus", "alarms"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "alarms"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "<all_urls>"
+      ],
       "js": [
         "shared/api.js",
         "shared/settings.js",
@@ -43,7 +51,9 @@
         "content/content-css.js",
         "content/content.js"
       ],
-      "css": ["content/content.css"],
+      "css": [
+        "content/content.css"
+      ],
       "run_at": "document_start",
       "all_frames": true,
       "match_about_blank": true
@@ -51,9 +61,18 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/fonts/Yellowtail-latin.woff2", "assets/fonts/Jost-latin.woff2"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "assets/fonts/Yellowtail-latin.woff2",
+        "assets/fonts/Jost-latin.woff2"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
+      "use_dynamic_url": true
     }
   ],
-  "minimum_chrome_version": "121"
+  "minimum_chrome_version": "121",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+  }
 }

@@ -20,17 +20,21 @@
   }
 
   // Plain phrase -> regex source. Words joined by optional separators, apostrophes optional,
-  // hyphens act as separators, "*" is a wildcard for the rest of a word (custom words only).
+  // hyphens act as separators. In custom words a trailing "*" ("trailer*") matches up to 40 more letters.
+  // A "*" anywhere else is rejected (returns null): chained unbounded wildcards over the same character
+  // class backtrack catastrophically and could freeze every page the user opens.
   function phrase(text, { wildcard = false } = {}) {
     const words = String(text).trim().split(/[\s\-_]+/).filter(Boolean);
-    const src = words
-      .map((w) => {
-        let out = escapeRe(w).replace(/['’]/g, "['’]?");
-        if (wildcard) out = out.replace(/\\\*/g, '[\\p{L}\\p{N}]*');
-        return out;
-      })
-      .join(SEP);
-    return `${L}${src}${R}`;
+    const parts = [];
+    for (const w of words) {
+      let core = w;
+      let tail = '';
+      if (wildcard && w.endsWith('*')) { core = w.slice(0, -1); tail = '[\\p{L}\\p{N}]{0,40}'; }
+      if (!core || core.includes('*')) return null;
+      parts.push(escapeRe(core).replace(/['’]/g, "['’]?") + tail);
+    }
+    if (!parts.length) return null;
+    return `${L}${parts.join(SEP)}${R}`;
   }
 
   const t = (label, ...phrases) => ({ label, src: phrases.map((p) => phrase(p)).join('|') });
@@ -112,8 +116,9 @@
     }
     for (const word of settings.custom || []) {
       const w = String(word).trim();
-      if (!w || w.replace(/\*/g, '').length < 2) continue;
-      terms.push({ label: w, pack: 'custom', src: phrase(w, { wildcard: true }) });
+      if (!w || w.replace(/\*/g, '').length < 2 || (w.match(/\*/g) || []).length > 3) continue;   // at most 3 wildcards
+      const psrc = phrase(w, { wildcard: true });
+      if (psrc) terms.push({ label: w, pack: 'custom', src: psrc });   // null = unsafe wildcard use, ignored
     }
 
     const src = terms.length ? terms.map((x) => `(${x.src})`).join('|') : NEVER;
@@ -121,6 +126,16 @@
     const reG = new RegExp(src, 'giu');
     const coreTerms = PACKS[0].terms;
     const coreRe = new RegExp(coreTerms.map((x) => `(?:${x.src})`).join('|'), 'iu');
+
+    // Never hand the regex more than 50 KB at once: long text is scanned in overlapping windows
+    // (the overlap is longer than any term, so a match on a boundary is still found).
+    const WIN = 50000, OVERLAP = 512;
+    function* windows(s) {
+      if (s.length <= WIN) { yield [s, 0]; return; }
+      for (let i = 0; i < s.length; i += WIN - OVERLAP) yield [s.slice(i, i + WIN), i];
+    }
+    const cap = (s) => (s.length > WIN ? s.slice(0, WIN) : s);   // only for the short-text settings test box
+    function anyWindow(rx, s) { for (const [w] of windows(s)) if (rx.test(w)) return true; return false; }
 
     function termOf(m) {
       for (let i = 1; i < m.length; i++) if (m[i] !== undefined) return terms[i - 1];
@@ -131,18 +146,22 @@
       terms,
       re,
       coreRe,
-      test: (s) => !!s && re.test(s),
-      testCore: (s) => !!s && coreRe.test(s),
+      test: (s) => !!s && anyWindow(re, s),
+      testCore: (s) => !!s && anyWindow(coreRe, s),
       // First match with the term that produced it.
       first(s) {
         if (!s) return null;
-        const m = re.exec(s);
-        return m ? { text: m[0], index: m.index, term: termOf(m) } : null;
+        for (const [w, off] of windows(s)) {
+          const m = re.exec(w);
+          if (m) return { text: m[0], index: m.index + off, term: termOf(m) };
+        }
+        return null;
       },
       // Every match (for the settings test box).
       all(s) {
         const out = [];
         if (!s) return out;
+        s = cap(s);
         reG.lastIndex = 0;
         let m;
         while ((m = reG.exec(s))) {

@@ -91,6 +91,7 @@
     e.preventDefault();
     const v = $('customInput').value.trim().slice(0, 60);
     if (v.replace(/\*/g, '').length < 2) { UI.toast('Use at least 2 letters'); return; }
+    if ((v.match(/\*/g) || []).length > 3) { UI.toast('Use at most 3 wildcards'); return; }
     if (s.custom.some((x) => x.toLowerCase() === v.toLowerCase())) { UI.toast('Already added'); return; }
     set({ custom: [...s.custom, v] });
     $('customInput').value = '';
